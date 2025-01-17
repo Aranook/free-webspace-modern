@@ -24,13 +24,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Initialiser le projet et installer les dépendances
+      # Vérifier si package.json existe, sinon créer un package.json et installer les dépendances de base
       - name: Initialize project and install dependencies
         run: |
           # Initialiser un projet npm avec un package.json minimal
-          if [ ! -f package.json ]; then
-            npm init -y
-          fi
+          npm init -y
           
           # Installer les dépendances nécessaires
           npm install react react-dom react-scripts vue vue-router axios bootstrap
@@ -52,30 +50,45 @@ jobs:
       # Ajouter un script "build" au package.json
       - name: Add build script to package.json
         run: |
-          if ! grep -q '"build":' package.json; then
-            jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
-          fi
+          # Ajouter le script build nécessaire pour React
+          jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
 
       # Construire l'application (ceci génère les fichiers de build)
       - name: Build the project
-        run: npm run build
+        run: |
+          npm run build
 
       # Vérifier l'existence du dossier de build
-      - name: Verify build directory
+      - name: Check build directory
         run: |
           if [ -d build ]; then
-            echo "Build directory exists. Contents:"
+            echo "Le dossier 'build' existe et contient les fichiers suivants :"
             ls -l build
           else
-            echo "Error: Build directory does not exist. Build step may have failed."
+            echo "Erreur : Le dossier 'build' est introuvable."
             exit 1
           fi
 
-      # Télécharger l'artefact pour le déploiement
-      - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build  # Utilisez le dossier 'build' généré par React
+      # Déployer le build sur la branche gh-pages
+      - name: Deploy build to gh-pages
+        run: |
+          git fetch origin gh-pages || echo "Branche gh-pages n'existe pas"
+          git checkout --orphan gh-pages
+          git reset --hard
+          git clean -fdx
+          
+          if [ -d build ]; then
+            cp -r build/* .
+          else
+            echo "Erreur : Le dossier 'build' est introuvable. Assurez-vous que l'étape de construction s'est bien déroulée."
+            exit 1
+          fi
+          
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Déploiement GitHub Pages" || echo "Rien à committer"
+          git push origin gh-pages --force
 
   # Job de déploiement sur GitHub Pages
   deploy:

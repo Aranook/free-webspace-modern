@@ -24,8 +24,14 @@ jobs:
       # 1. Vérifier le code source
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # 2. Configurer l'identité Git pour les commits
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.c
     
-      # 1. Vérifier si la branche gh-pages existe, sinon la créer
+      # 3. Vérifier si la branche gh-pages existe, sinon la créer
       - name: Check if gh-pages exists
         run: |
           git fetch origin
@@ -39,11 +45,11 @@ jobs:
             echo "La branche gh-pages existe déjà."
           fi
 
-      # 2. Vérifier le code source
+      # 4. Vérifier le code source
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 3. Configurer Python
+      # 5. Configurer Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -54,12 +60,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
 
-      # 5. Exécuter des tests ou construire votre projet
+      # 6. Exécuter des tests ou construire votre projet
       - name: Run tests or build
         run: |
           # Remplacer par la commande de build ou de test de votre projet
 
-      # 6. Déployer sur la branche gh-pages
+      # 7. Déployer sur la branche gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

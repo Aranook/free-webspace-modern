@@ -24,66 +24,87 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Vérifier si package.json existe, sinon créer un package.json et installer les dépendances de base
+      # Initialiser et installer les dépendances
       - name: Initialize project and install dependencies
         run: |
-          # Initialiser un projet npm avec un package.json minimal
           npm init -y
-          
-          # Installer les dépendances nécessaires
-          npm install react react-dom react-scripts vue vue-router axios bootstrap
+          npm install react react-dom react-scripts
 
-          # Créer un fichier index.html minimal dans le dossier public si il n'existe pas
-          mkdir -p public
+          # Créer les fichiers nécessaires pour une app React basique
+          mkdir -p public src
           echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>React App</title></head><body><div id="root"></div></body></html>' > public/index.html
-
-          # Créer un fichier index.js dans le dossier src
-          mkdir -p src
           echo 'import React from "react"; import ReactDOM from "react-dom"; import "./index.css"; import App from "./App"; ReactDOM.render(<React.StrictMode><App /></React.StrictMode>, document.getElementById("root"));' > src/index.js
-
-          # Créer un fichier App.js simple dans src
           echo 'import React from "react"; const App = () => <div>Welcome to React!</div>; export default App;' > src/App.js
-
-          # Créer un fichier index.css vide (ou avec quelques styles)
           echo 'body { font-family: Arial, sans-serif; margin: 0; padding: 0; }' > src/index.css
 
-      # Ajouter un script "build" au package.json
-      - name: Add build script to package.json
+      # Ajouter le script de build dans package.json
+      - name: Add build script
         run: |
-          # Ajouter le script build nécessaire pour React
           jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
 
-      # Construire l'application (ceci génère les fichiers de build)
+      # Lancer le build de l'application
       - name: Build the project
-        run: npm run build  # Ce script utilise 'react-scripts build' pour créer le build React
+        run: npm run build
 
-      # Télécharger l'artefact pour le déploiement
-      - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v3
+      # Vérifier les fichiers générés
+      - name: Verify build output
+        run: |
+          if [ -d build ]; then
+            echo "Build completed successfully. Contents:"
+            ls -l build
+          else
+            echo "Build directory not found!"
+            exit 1
+          fi
+
+      # Sauvegarder tout l'environnement pour le déploiement
+      - name: Save environment for deployment
+        uses: actions/upload-artifact@v3
         with:
-          path: ./build  # Utilisez le dossier 'build' généré par React
+          name: environment
+          path: |
+            build
+            public
+            package.json
+            node_modules  # Inclure les dépendances si nécessaire
 
   # Job de déploiement sur GitHub Pages
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # Ce job dépend du job "build" pour fonctionner
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}  # URL de la page GitHub Pages
+    needs: build
 
     steps:
-      # Checkout du code pour déployer sur la branche 'main'
-      - name: Checkout repository again
-        uses: actions/checkout@v4
+      # Télécharger l'environnement sauvegardé
+      - name: Download environment
+        uses: actions/download-artifact@v3
         with:
-          ref: main  # On s'assure d'être sur la branche main pour le déploiement
+          name: environment
 
-      # Déployer l'artefact sur GitHub Pages
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-        with:
-          branch: gh-pages  # Déployer sur la branche gh-pages au lieu de main (commonly used for GitHub Pages)
+      # Préparer la branche gh-pages
+      - name: Setup gh-pages branch
+        run: |
+          git fetch origin gh-pages || echo "La branche gh-pages n'existe pas, elle sera créée."
+          git checkout --orphan gh-pages
+          git reset --hard
+          git clean -fdx
+
+      # Copier tous les fichiers nécessaires pour le déploiement
+      - name: Copy all files for deployment
+        run: |
+          cp -r build/* .
+          cp -r public .
+          cp package.json .
+          echo "Fichiers copiés :"
+          ls -la
+
+      # Configurer Git, committer et pousser les changements
+      - name: Commit and push to gh-pages
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Déploiement GitHub Pages" || echo "Aucun changement à committer"
+          git push origin gh-pages --force
 
       # Récupérer l'URL de la page déployée et afficher un lien cliquable
       - name: Provide link to deployed site

@@ -28,8 +28,8 @@ jobs:
       # 2. Configurer l'identité Git pour les commits
       - name: Set up Git identity
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.c
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
     
       # 3. Vérifier si la branche gh-pages existe, sinon la créer
       - name: Check if gh-pages exists

@@ -88,6 +88,9 @@ jobs:
           git checkout --orphan gh-pages  # Créer une nouvelle branche sans historique
           git reset --hard  # Supprime tous les fichiers dans l'index
           git clean -fdx  # Supprime les fichiers non suivis
+          # Configurer l'identité de l'utilisateur pour le commit
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
           git add .  # Ajouter tous les fichiers (le build) pour le commit
           git commit -m "Déploiement GitHub Pages"  # Créer un commit
           git push origin gh-pages --force  # Pousser la branche gh-pages

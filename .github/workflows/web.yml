@@ -57,16 +57,12 @@ jobs:
             exit 1
           fi
 
-      # Sauvegarder tout l'environnement pour le déploiement
-      - name: Save environment for deployment
+      # Sauvegarder le dossier build pour le déploiement
+      - name: Save build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: environment
-          path: |
-            build
-            public
-            package.json
-            node_modules  # Inclure les dépendances si nécessaire
+          name: build
+          path: build
 
   # Job de déploiement sur GitHub Pages
   deploy:
@@ -74,28 +70,29 @@ jobs:
     needs: build
 
     steps:
-      # Télécharger l'environnement sauvegardé
-      - name: Download environment
+      # Checkout le dépôt
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Télécharger le dossier de build sauvegardé
+      - name: Download build artifact
         uses: actions/download-artifact@v3
         with:
-          name: environment
+          name: build
 
       # Préparer la branche gh-pages
       - name: Setup gh-pages branch
         run: |
           git fetch origin gh-pages || echo "La branche gh-pages n'existe pas, elle sera créée."
-          git checkout --orphan gh-pages
+          git checkout gh-pages || git checkout --orphan gh-pages
           git reset --hard
           git clean -fdx
 
-      # Copier tous les fichiers nécessaires pour le déploiement
-      - name: Copy all files for deployment
+      # Copier les fichiers de build vers la racine
+      - name: Deploy files to gh-pages
         run: |
           cp -r build/* .
-          cp -r public .
-          cp package.json .
-          echo "Fichiers copiés :"
-          ls -la
+          rm -rf build  # Nettoyage après copie
 
       # Configurer Git, committer et pousser les changements
       - name: Commit and push to gh-pages

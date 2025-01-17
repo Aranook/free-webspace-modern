@@ -33,6 +33,12 @@ jobs:
           # Installer les dépendances nécessaires
           npm install react react-dom react-scripts vue vue-router axios bootstrap
 
+      # Ajouter un script "build" au package.json
+      - name: Add build script to package.json
+        run: |
+          # Ajouter le script build nécessaire pour React
+          jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
+
       # Construire l'application (ceci génère les fichiers de build)
       - name: Build the project
         run: npm run build  # Ce script utilise 'react-scripts build' pour créer le build React

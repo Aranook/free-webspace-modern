@@ -33,6 +33,9 @@ jobs:
           # Installer les dépendances nécessaires
           npm install react react-dom react-scripts vue vue-router axios bootstrap
 
+          # Ajouter la dépendance manquante pour babel
+          npm install --save-dev @babel/plugin-proposal-private-property-in-object
+
           # Créer un fichier index.html minimal dans le dossier public si il n'existe pas
           mkdir -p public
           echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>React App</title></head><body><div id="root"></div></body></html>' > public/index.html
@@ -77,6 +80,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main  # On s'assure d'être sur la branche main pour le déploiement
+
+      # Supprimer la branche gh-pages si elle existe, puis la recréer
+      - name: Remove and recreate gh-pages branch
+        run: |
+          git fetch origin gh-pages || echo "Branche gh-pages n'existe pas"
+          git checkout --orphan gh-pages  # Créer une nouvelle branche sans historique
+          git reset --hard  # Supprime tous les fichiers dans l'index
+          git clean -fdx  # Supprime les fichiers non suivis
+          git add .  # Ajouter tous les fichiers (le build) pour le commit
+          git commit -m "Déploiement GitHub Pages"  # Créer un commit
+          git push origin gh-pages --force  # Pousser la branche gh-pages
 
       # Déployer l'artefact sur GitHub Pages
       - name: Deploy to GitHub Pages

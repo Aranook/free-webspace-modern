@@ -44,6 +44,9 @@ jobs:
           # Créer un fichier App.js simple dans src
           echo 'import React from "react"; const App = () => <div>Welcome to React!</div>; export default App;' > src/App.js
 
+          # Créer un fichier index.css vide (ou avec quelques styles)
+          echo 'body { font-family: Arial, sans-serif; margin: 0; padding: 0; }' > src/index.css
+
       # Ajouter un script "build" au package.json
       - name: Add build script to package.json
         run: |

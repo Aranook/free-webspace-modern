@@ -14,7 +14,15 @@ on:
     branches:
       - "main"  # Déclenche le workflow sur un pull request vers la branche 'main'
   workflow_dispatch:  # Permet de déclencher manuellement le workflow
+  
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest  # Exécution sur un environnement Ubuntu

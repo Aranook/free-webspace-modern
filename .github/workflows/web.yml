@@ -20,6 +20,11 @@ jobs:
     runs-on: ubuntu-latest  # Exécution sur un environnement Ubuntu
 
     steps:
+
+      # 1. Vérifier le code source
+      - name: Checkout code
+        uses: actions/checkout@v4
+    
       # 1. Vérifier si la branche gh-pages existe, sinon la créer
       - name: Check if gh-pages exists
         run: |

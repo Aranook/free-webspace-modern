@@ -37,6 +37,13 @@ jobs:
           mkdir -p public
           echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>React App</title></head><body><div id="root"></div></body></html>' > public/index.html
 
+          # Créer un fichier index.js dans le dossier src
+          mkdir -p src
+          echo 'import React from "react"; import ReactDOM from "react-dom"; import "./index.css"; import App from "./App"; ReactDOM.render(<React.StrictMode><App /></React.StrictMode>, document.getElementById("root"));' > src/index.js
+
+          # Créer un fichier App.js simple dans src
+          echo 'import React from "react"; const App = () => <div>Welcome to React!</div>; export default App;' > src/App.js
+
       # Ajouter un script "build" au package.json
       - name: Add build script to package.json
         run: |

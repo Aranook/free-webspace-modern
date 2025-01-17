@@ -24,11 +24,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Vérifier si package.json existe, sinon créer un package.json et installer les dépendances de base
+      # Initialiser le projet et installer les dépendances
       - name: Initialize project and install dependencies
         run: |
           # Initialiser un projet npm avec un package.json minimal
-          npm init -y
+          if [ ! -f package.json ]; then
+            npm init -y
+          fi
           
           # Installer les dépendances nécessaires
           npm install react react-dom react-scripts vue vue-router axios bootstrap
@@ -50,12 +52,24 @@ jobs:
       # Ajouter un script "build" au package.json
       - name: Add build script to package.json
         run: |
-          # Ajouter le script build nécessaire pour React
-          jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
+          if ! grep -q '"build":' package.json; then
+            jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
+          fi
 
       # Construire l'application (ceci génère les fichiers de build)
       - name: Build the project
-        run: npm run build  # Ce script utilise 'react-scripts build' pour créer le build React
+        run: npm run build
+
+      # Vérifier l'existence du dossier de build
+      - name: Verify build directory
+        run: |
+          if [ -d build ]; then
+            echo "Build directory exists. Contents:"
+            ls -l build
+          else
+            echo "Error: Build directory does not exist. Build step may have failed."
+            exit 1
+          fi
 
       # Télécharger l'artefact pour le déploiement
       - name: Upload build artifact

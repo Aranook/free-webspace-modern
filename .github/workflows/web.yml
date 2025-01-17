@@ -45,6 +45,8 @@ jobs:
           git fetch origin
           if ! git show-ref --quiet refs/heads/gh-pages; then
             echo "La branche gh-pages n'existe pas, création de la branche."
+            git config user.name "GitHub Actions Bot"
+            git config user.email "actions@github.com"
             git checkout --orphan gh-pages  # Créer une nouvelle branche orpheline
             git rm -rf .  # Supprimer tous les fichiers (car la branche est orpheline)
             git commit --allow-empty -m "Initial commit for gh-pages"

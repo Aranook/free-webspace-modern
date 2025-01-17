@@ -1,19 +1,10 @@
-## Project test
-# GitHub Actions workflow
-# Auteur : ACOMDIR
-# Url contact: https://www.facebook.com/acomdir/
-# Please come vote my page Facebook to support me in the development of this open source project.
-
-name: ci-build-gh-pages
+name: Deploy Web App to GitHub Pages
 
 on:
   push:
     branches:
-      - "main"  # Déclenche le workflow sur un push vers la branche 'main'
-  pull_request:
-    branches:
-      - "main"  # Déclenche le workflow sur un pull request vers la branche 'main'
-  workflow_dispatch:  # Permet de déclencher manuellement le workflow
+      - main  # Déclenche le workflow sur chaque push vers la branche 'main'
+  workflow_dispatch:  # Permet d'exécuter manuellement le workflow via l'onglet Actions
 
 permissions:
   contents: read
@@ -25,53 +16,74 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest  # Exécution sur un environnement Ubuntu
-
+  # Job de construction du projet
+  build:
+    runs-on: ubuntu-latest
     steps:
-      # 1. Vérifier le code source
-      - name: Checkout code
+      # Checkout le code source du dépôt
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Configurer l'identité Git pour les commits
-      - name: Set up Git identity
+      # Vérifier si package.json existe, sinon créer un package.json et installer les dépendances de base
+      - name: Initialize project and install dependencies
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
+          # Initialiser un projet npm avec un package.json minimal
+          npm init -y
+          
+          # Installer les dépendances nécessaires
+          npm install react react-dom react-scripts vue vue-router axios bootstrap
 
-      # 3. Vérifier si la branche gh-pages existe, sinon la créer
-      - name: Check if gh-pages exists
+          # Créer un fichier index.html minimal dans le dossier public si il n'existe pas
+          mkdir -p public
+          echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>React App</title></head><body><div id="root"></div></body></html>' > public/index.html
+
+          # Créer un fichier index.js dans le dossier src
+          mkdir -p src
+          echo 'import React from "react"; import ReactDOM from "react-dom"; import "./index.css"; import App from "./App"; ReactDOM.render(<React.StrictMode><App /></React.StrictMode>, document.getElementById("root"));' > src/index.js
+
+          # Créer un fichier App.js simple dans src
+          echo 'import React from "react"; const App = () => <div>Welcome to React!</div>; export default App;' > src/App.js
+
+          # Créer un fichier index.css vide (ou avec quelques styles)
+          echo 'body { font-family: Arial, sans-serif; margin: 0; padding: 0; }' > src/index.css
+
+      # Ajouter un script "build" au package.json
+      - name: Add build script to package.json
         run: |
-          git fetch origin
-          if ! git show-ref --quiet refs/heads/gh-pages; then
-            echo "La branche gh-pages n'existe pas, création de la branche."
-            git config user.name "GitHub Actions Bot"
-            git config user.email "actions@github.com"
-            git checkout --orphan gh-pages  # Créer une nouvelle branche orpheline
-            git rm -rf .  # Supprimer tous les fichiers (car la branche est orpheline)
-            git commit --allow-empty -m "Initial commit for gh-pages"
-            git push origin gh-pages  # Pousser la branche gh-pages sur le dépôt distant
-          else
-            echo "La branche gh-pages existe déjà."
-          fi
+          # Ajouter le script build nécessaire pour React
+          jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
 
-      # 6. Exécuter des tests ou construire votre projet
-      - name: Run tests or build
-        run: |
-          # Remplacer par la commande de build ou de test de votre projet
+      # Construire l'application (ceci génère les fichiers de build)
+      - name: Build the project
+        run: npm run build  # Ce script utilise 'react-scripts build' pour créer le build React
 
-      # 7. Déployer sur GitHub Pages (via peaceiris/actions-gh-pages)
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      # Télécharger l'artefact pour le déploiement
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # Utiliser le token GitHub pour l'authentification
-          branch: gh-pages  # Branche de destination
-          folder: build  # Le dossier à déployer (modifiez-le en fonction de votre configuration)
-          clean: true  # Nettoie le répertoire gh-pages avant le déploiement
+          path: ./build  # Utilisez le dossier 'build' généré par React
 
-      # Optionnel : Si vous souhaitez notifier ou exécuter d'autres actions après le déploiement
-      - name: Notify deployment success
-        run: echo "Deployment to gh-pages successful!"
+  # Job de déploiement sur GitHub Pages
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Ce job dépend du job "build" pour fonctionner
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}  # URL de la page GitHub Pages
+
+    steps:
+      # Checkout du code pour déployer sur la branche 'main'
+      - name: Checkout repository again
+        uses: actions/checkout@v4
+        with:
+          ref: main  # On s'assure d'être sur la branche main pour le déploiement
+
+      # Déployer l'artefact sur GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          branch: gh-pages  # Déployer sur la branche gh-pages au lieu de main (commonly used for GitHub Pages)
 
       # Récupérer l'URL de la page déployée et afficher un lien cliquable
       - name: Provide link to deployed site

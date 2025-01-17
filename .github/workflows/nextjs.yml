@@ -20,37 +20,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Récupère le code source du dépôt
+      # Checkout le code source du dépôt
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Initialisation du projet npm et installation des packages de base
+      # Vérifier si package.json existe, sinon créer un package.json et installer les dépendances de base
       - name: Initialize project and install dependencies
         run: |
           # Initialiser un projet npm avec un package.json minimal
           npm init -y
           
-          # Installer React et React-DOM
-          npm install react react-dom react-scripts
-          
-          # Installer Vue et Vue Router
-          npm install vue vue-router
-          
-          # Installer Axios pour les appels HTTP
-          npm install axios
-          
-          # Installer Bootstrap pour les styles
-          npm install bootstrap
+          # Installer les dépendances nécessaires
+          npm install react react-dom react-scripts vue vue-router axios bootstrap
 
-      # Installer toutes les dépendances après l'ajout dans le package.json
-      - name: Install dependencies
-        run: npm install
-
-      # Construire l'application (pour un projet React ou autre)
+      # Construire l'application (ceci génère les fichiers de build)
       - name: Build the project
-        run: npm run build
+        run: npm run build  # Ce script utilise 'react-scripts build' pour créer le build React
 
-      # Exporter le projet (si vous utilisez Next.js ou un autre générateur statique)
+      # Exporter le site (si nécessaire)
       - name: Export the site (if using Next.js)
         run: npm run export || echo "No export command found"
 
@@ -58,7 +45,7 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out  # Indique le dossier des fichiers statiques générés
+          path: ./build  # Utilisez le dossier 'build' généré par React
 
   # Job de déploiement sur GitHub Pages
   deploy:
@@ -69,13 +56,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}  # URL de la page GitHub Pages
 
     steps:
-      # Checkout the repository again to deploy to the same branch
+      # Checkout du code pour déployer sur la branche 'main'
       - name: Checkout repository again
         uses: actions/checkout@v4
         with:
-          ref: main  # S'assurer qu'on est bien sur la branche main
+          ref: main  # On s'assure d'être sur la branche main pour le déploiement
 
-      # Déployer l'artefact dans la racine de la branche 'main'
+      # Déployer l'artefact sur GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

@@ -33,6 +33,10 @@ jobs:
           # Installer les dépendances nécessaires
           npm install react react-dom react-scripts vue vue-router axios bootstrap
 
+          # Créer un fichier index.html minimal dans le dossier public si il n'existe pas
+          mkdir -p public
+          echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>React App</title></head><body><div id="root"></div></body></html>' > public/index.html
+
       # Ajouter un script "build" au package.json
       - name: Add build script to package.json
         run: |
@@ -42,10 +46,6 @@ jobs:
       # Construire l'application (ceci génère les fichiers de build)
       - name: Build the project
         run: npm run build  # Ce script utilise 'react-scripts build' pour créer le build React
-
-      # Exporter le site (si nécessaire)
-      - name: Export the site (if using Next.js)
-        run: npm run export || echo "No export command found"
 
       # Télécharger l'artefact pour le déploiement
       - name: Upload build artifact
@@ -73,4 +73,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          branch: main  # Indique qu'on déploie sur la branche 'main'
+          branch: gh-pages  # Déployer sur la branche gh-pages au lieu de main (commonly used for GitHub Pages)

@@ -60,12 +60,6 @@ jobs:
       - name: Build the project
         run: npm run build  # Ce script utilise 'react-scripts build' pour créer le build React
 
-      # Télécharger l'artefact pour le déploiement
-      - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build  # Utilisez le dossier 'build' généré par React
-
   # Job de déploiement sur GitHub Pages
   deploy:
     runs-on: ubuntu-latest
@@ -88,13 +82,25 @@ jobs:
           git checkout --orphan gh-pages  # Créer une nouvelle branche sans historique
           git reset --hard  # Supprime tous les fichiers dans l'index
           git clean -fdx  # Supprime les fichiers non suivis
-          # Copier le contenu du dossier de build dans le répertoire courant
-          cp -r build/* .
+
+      # Copier les fichiers de build et les committer
+      - name: Copy build files and deploy
+        run: |
+          # Vérifier si le dossier build existe avant de copier
+          if [ -d build ]; then
+            cp -r build/* .
+          else
+            echo "Erreur : Le dossier 'build' est introuvable. Assurez-vous que l'étape de construction s'est bien déroulée."
+            exit 1
+          fi
+
           # Configurer l'identité de l'utilisateur pour le commit
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
+
+          # Ajouter les fichiers générés et pousser sur la branche gh-pages
           git add .  # Ajouter tous les fichiers (le build) pour le commit
-          git commit -m "Déploiement GitHub Pages"  # Créer un commit
+          git commit -m "Déploiement GitHub Pages" || echo "Rien à committer"
           git push origin gh-pages --force  # Pousser la branche gh-pages
 
       # Déployer l'artefact sur GitHub Pages

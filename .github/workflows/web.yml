@@ -1,107 +1,78 @@
-name: Deploy Web App to GitHub Pages
+## Project
+# GitHub Actions workflow
+# Auteur : ACOMDIR
+# Url contact: https://www.facebook.com/acomdir/
+# Please come vote my page Facebook to support me in the development of this open source project.
+
+name: ci-build-gh-pages
 
 on:
   push:
     branches:
-      - main  # Déclenche le workflow sur chaque push vers la branche 'main'
-  workflow_dispatch:  # Permet d'exécuter manuellement le workflow via l'onglet Actions
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+      - "main"  # Déclenche le workflow sur un push vers la branche 'main'
+  pull_request:
+    branches:
+      - "main"  # Déclenche le workflow sur un pull request vers la branche 'main'
+  workflow_dispatch:  # Permet de déclencher manuellement le workflow
 
 jobs:
-  # Job de construction du projet
-  build:
-    runs-on: ubuntu-latest
+  build_and_deploy:
+    runs-on: ubuntu-latest  # Exécution sur un environnement Ubuntu
+
     steps:
-      # Checkout le code source du dépôt
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Initialiser et installer les dépendances
-      - name: Initialize project and install dependencies
+      # 1. Vérifier si la branche gh-pages existe, sinon la créer
+      - name: Check if gh-pages exists
         run: |
-          npm init -y
-          npm install react react-dom react-scripts
-
-          # Créer les fichiers nécessaires pour une app React basique
-          mkdir -p public src
-          echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>React App</title></head><body><div id="root"></div></body></html>' > public/index.html
-          echo 'import React from "react"; import ReactDOM from "react-dom"; import "./index.css"; import App from "./App"; ReactDOM.render(<React.StrictMode><App /></React.StrictMode>, document.getElementById("root"));' > src/index.js
-          echo 'import React from "react"; const App = () => <div>Welcome to React!</div>; export default App;' > src/App.js
-          echo 'body { font-family: Arial, sans-serif; margin: 0; padding: 0; }' > src/index.css
-
-      # Ajouter le script de build dans package.json
-      - name: Add build script
-        run: |
-          jq '.scripts.build="react-scripts build"' package.json > temp.json && mv temp.json package.json
-
-      # Lancer le build de l'application
-      - name: Build the project
-        run: npm run build
-
-      # Vérifier les fichiers générés
-      - name: Verify build output
-        run: |
-          if [ -d build ]; then
-            echo "Build completed successfully. Contents:"
-            ls -l build
+          git fetch origin
+          if ! git show-ref --quiet refs/heads/gh-pages; then
+            echo "La branche gh-pages n'existe pas, création de la branche."
+            git checkout --orphan gh-pages  # Créer une nouvelle branche orpheline
+            git rm -rf .  # Supprimer tous les fichiers (car la branche est orpheline)
+            git commit --allow-empty -m "Initial commit for gh-pages"
+            git push origin gh-pages  # Pousser la branche gh-pages sur le dépôt distant
           else
-            echo "Build directory not found!"
-            exit 1
+            echo "La branche gh-pages existe déjà."
           fi
 
-      # Sauvegarder le dossier build pour le déploiement
-      - name: Save build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: build
-
-  # Job de déploiement sur GitHub Pages
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      # Checkout le dépôt
-      - name: Checkout repository
+      # 2. Vérifier le code source
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # Télécharger le dossier de build sauvegardé
-      - name: Download build artifact
-        uses: actions/download-artifact@v3
+      # 3. Configurer Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          name: build
+          python-version: '3.13.1'  # Version Python valide pour votre projet
 
-      # Préparer la branche gh-pages
-      - name: Setup gh-pages branch
+      # 4. Installer les dépendances (si vous avez un fichier requirements.txt)
+      - name: Install dependencies
         run: |
-          git fetch origin gh-pages || echo "La branche gh-pages n'existe pas, elle sera créée."
-          git checkout gh-pages || git checkout --orphan gh-pages
-          git reset --hard
-          git clean -fdx
+          python -m pip install --upgrade pip
 
-      # Copier les fichiers de build vers la racine
-      - name: Deploy files to gh-pages
+      # 5. Exécuter des tests ou construire votre projet
+      - name: Run tests or build
         run: |
-          cp -r build/* .
-          rm -rf build  # Nettoyage après copie
+          # Remplacer par la commande de build ou de test de votre projet
 
-      # Configurer Git, committer et pousser les changements
-      - name: Commit and push to gh-pages
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "Déploiement GitHub Pages" || echo "Aucun changement à committer"
-          git push origin gh-pages --force
+      # 6. Déployer sur la branche gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}  # Utiliser le token GitHub pour l'authentification
+          branch: gh-pages  # Branche de destination
+          folder: build  # Le dossier à déployer (modifiez-le en fonction de votre configuration)
+          clean: true  # Nettoie le répertoire gh-pages avant le déploiement
+
+      # Optionnel : Si vous souhaitez notifier ou exécuter d'autres actions après le déploiement
+      - name: Notify deployment success
+        run: echo "Deployment to gh-pages successful!"
+
+      # Déployer l'artefact sur GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          branch: gh-pages  # Déployer sur la branche gh-pages au lieu de main (commonly used for GitHub Pages)
 
       # Récupérer l'URL de la page déployée et afficher un lien cliquable
       - name: Provide link to deployed site

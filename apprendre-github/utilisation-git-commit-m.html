@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="style.css">
+<title>Utilisation de git commit -m "premier commit"</title>
+
+</head>
+<body>
+<header>
+<nav>
+    <ul>
+        <li><a href="../index.html" class="active">Accueil</a></li>
+        <li><a href="#">Catégories</a>
+            <ul>
+				<li><a href="creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+				<li><a href="supprimer-depot-github-Invite-commandes.html">Supprimer un Dépôt</a></li>
+                <li><a href="synchronisation-github-windows.html">Synchronisation local avec GitHub</a></li>
+				<li><a href="cloner-depot-github-windows.html">Cloner un Dépôt GitHub vers local</a></li>
+				<li><a href="utilisation-git-pull-origin.html">Utilisation de git pull origin</a></li>
+				<li><a href="utilisation-git-commit-m.html">Utilisation de git commit -m</a></li>
+				<li><a href="creer-commit-invite-commande.html">Créer un Commit</a></li>
+                <li><a href="difference-cmd-bash.html">Différence entre CMD et Bash</a></li>
+                <li><a href="resolution-conflits-git.html">Résolution de conflits</a></li>
+            </ul>
+        </li>
+        <li><a href="a-propos.html">À propos</a></li>
+    </ul>
+</nav>
+<h1>ACOMDIR</h1>
+<p>Créateur des structures de développement sous forme d'arborescence prêtes à l'emploi.</p>
+<h1>Procédure pour Synchroniser un Dépôt Local avec GitHub</h1>
+</header>
+
+<div class="content">
+    <h1>Utilisation de <code>git commit -m "premier commit"</code></h1>
+
+    <ul>
+        <li><strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.</li>
+    </ul>
+	
+	<p>Attention : GitHub propose deux branches (répertoires dépôts) : main ou master. Nos exemples sont construites sur la branche master.</p>
+	<p>La commande <code>git branch</code> vous permet de lister toutes les branches disponibles et met en évidence la branche active avec un astérisque (*) de votre compte GitHub.</p>
+
+    <h2>Introduction à <code>git commit</code></h2>
+    <p>La commande <code>git commit</code> est utilisée pour enregistrer les modifications dans l'historique du dépôt Git local. Chaque commit représente une version du projet à un instant donné, avec un message descriptif pour documenter les modifications.</p>
+
+    <h2>Étape 1 : Ajouter des fichiers au suivi Git</h2>
+    <p>Avant de créer un commit, vous devez ajouter les fichiers que vous souhaitez inclure dans ce commit. Utilisez la commande suivante pour ajouter tous les fichiers modifiés ou créés :</p>
+    <pre><code>git add .</code></pre>
+    <p>Pour ajouter un fichier spécifique, utilisez :</p>
+    <pre><code>git add nom_du_fichier</code></pre>
+
+    <h2>Étape 2 : Créer un Commit</h2>
+    <p>Une fois les fichiers ajoutés, vous pouvez créer un commit en utilisant la commande suivante :</p>
+    <pre><code>git commit -m "premier commit"</code></pre>
+
+    <h3>Explication de la commande :</h3>
+    <ul>
+        <li><strong>git commit</strong> : Indique que vous souhaitez enregistrer un ensemble de modifications.</li>
+        <li><strong>-m</strong> : Spécifie que vous voulez inclure un message de commit directement dans la commande.</li>
+        <li><strong>"premier commit"</strong> : Le message de commit. Il doit être descriptif et expliquer ce que vous avez fait dans ce commit.</li>
+    </ul>
+
+    <h2>Étape 3 : Vérifier les Commits</h2>
+    <p>Pour vérifier que votre commit a bien été créé, utilisez la commande suivante :</p>
+    <pre><code>git log</code></pre>
+    <p>Cette commande affiche l'historique des commits. Vous devriez voir votre message de commit "premier commit" dans la liste.</p>
+
+    <h2>Exemples de Messages de Commit</h2>
+    <p>Voici quelques exemples de messages de commit clairs et concis :</p>
+    <ul>
+        <li><code>git commit -m "Ajout du fichier README.md avec la description du projet"</code></li>
+        <li><code>git commit -m "Correction d'un bug dans la fonction calculTotal()"</code></li>
+        <li><code>git commit -m "Mise à jour du fichier .gitignore pour inclure les logs"</code></li>
+    </ul>
+
+    <h2>Bonnes Pratiques pour les Messages de Commit</h2>
+    <ul>
+        <li>Utilisez un message court mais descriptif.</li>
+        <li>Expliquez <strong>pourquoi</strong> une modification a été effectuée, pas seulement <strong>ce qui</strong> a été modifié.</li>
+        <li>Évitez les messages vagues comme <code>"modifications"</code> ou <code>"update"</code>.</li>
+    </ul>
+
+    <h2>Conseils Supplémentaires</h2>
+    <ul>
+        <li>Pour modifier le dernier message de commit, utilisez : <pre><code>git commit --amend -m "Nouveau message"</code></pre></li>
+        <li>Si vous oubliez d'ajouter un fichier, vous pouvez l'ajouter et mettre à jour le commit avec <code>--amend</code>.</li>
+    </ul>
+</div>
+<!-- Footer Section -->
+<footer>
+<div class="footer-column">
+    <h3>About Us</h3>
+    <p>WEB DEVELLOPEMENT.</p>
+	<p>Acomdir&copy; 2025. Tous droits réservés.</p>
+</div>
+<div class="footer-column">
+    <h3>Services</h3>
+    <p>Création de structures de développement.</p>
+</div>
+<div class="footer-column">
+    <h3>Contact</h3>
+<p>
+<strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.
+</p>
+</div>
+</footer>
+</body>
+</html>

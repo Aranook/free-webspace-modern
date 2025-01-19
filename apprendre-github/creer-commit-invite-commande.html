@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Créer un Commit via l'Invite de Commandes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="../index.html" class="active">Accueil</a></li>
+            <li><a href="#">Catégories</a>
+                <ul>
+					<li><a href="creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+					<li><a href="supprimer-depot-github-Invite-commandes.html">Supprimer un Dépôt</a></li>
+                    <li><a href="synchronisation-github-windows.html">Synchronisation local avec GitHub</a></li>
+					<li><a href="cloner-depot-github-windows.html">Cloner un Dépôt GitHub vers local</a></li>
+					<li><a href="utilisation-git-pull-origin.html">Utilisation de git pull origin</a></li>
+					<li><a href="utilisation-git-commit-m.html">Utilisation de git commit -m</a></li>
+					<li><a href="creer-commit-invite-commande.html">Créer un Commit</a></li>
+                    <li><a href="difference-cmd-bash.html">Différence entre CMD et Bash</a></li>
+                    <li><a href="resolution-conflits-git.html">Résolution de conflits</a></li>
+                </ul>
+            </li>
+            <li><a href="a-propos.html">À propos</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="content">
+<h1>Créer un Commit via l'Invite de Commandes</h1>
+<ul>
+    <li><strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.</li>
+</ul>
+<p>Un <strong>commit</strong> enregistre les modifications apportées à votre projet. C'est une étape clé dans la gestion des versions d'un projet avec Git.</p>
+
+<h2>Étape 1 : Ajouter des fichiers au suivi Git</h2>
+<p>Avant de créer un commit, vous devez ajouter les fichiers modifiés ou nouveaux au suivi de Git :</p>
+<div class="code-block">git add .</div>
+<p>Cette commande ajoute tous les fichiers modifiés ou nouveaux dans le répertoire actuel.</p>
+<p>Pour ajouter un fichier spécifique :</p>
+<div class="code-block">git add nom_du_fichier</div>
+
+<h2>Étape 2 : Créer un Commit</h2>
+<p>Une fois les fichiers ajoutés, créez un commit avec un message décrivant les modifications :</p>
+<div class="code-block">git commit -m "Message décrivant vos modifications"</div>
+<p>Exemple :</p>
+<div class="code-block">git commit -m "Ajout du fichier README.md et correction de bugs mineurs"</div>
+
+<h2>Étape 3 : Vérifier le Commit</h2>
+<p>Pour vérifier que votre commit a été créé avec succès, utilisez :</p>
+<div class="code-block">git log</div>
+<p>Cette commande affiche l'historique des commits, y compris l'identifiant, la date et le message de chaque commit.</p>
+
+<h2>Étape 4 : Pousser les Modifications vers GitHub</h2>
+<p>Pour synchroniser vos commits locaux avec le dépôt distant, utilisez :</p>
+<div class="code-block">git push origin main</div>
+<p>Remplacez <code>main</code> par le nom de votre branche si nécessaire.</p>
+
+<h2>Conseils Supplémentaires</h2>
+<ul>
+    <li>Écrivez des messages de commit clairs et concis pour décrire vos modifications.</li>
+    <li>Utilisez des commits fréquents pour sauvegarder votre travail étape par étape.</li>
+    <li>Vérifiez toujours l'état de votre dépôt avec <code>git status</code> avant de créer un commit.</li>
+</ul>
+</div>
+<footer>
+<div class="footer-column">
+	<h3>About Us</h3>
+	<p>WEB DEVELLOPEMENT.</p>
+	<p>Acomdir&copy; 2025. Tous droits réservés.</p>
+</div>
+<div class="footer-column">
+	<h3>Services</h3>
+	<p>Création de structures de développement.</p>
+</div>
+<div class="footer-column">
+	<h3>Contact</h3>
+<p>
+<strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.
+</p>
+</div>
+</footer>
+</body>
+</html>

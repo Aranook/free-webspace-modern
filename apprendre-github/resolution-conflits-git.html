@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="style.css">
+<title>Résolution de Conflits Git</title>
+
+</head>
+<body>
+<header>
+<nav>
+    <ul>
+        <li><a href="../index.html" class="active">Accueil</a></li>
+        <li><a href="#">Catégories</a>
+            <ul>
+				<li><a href="creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+				<li><a href="supprimer-depot-github-Invite-commandes.html">Supprimer un Dépôt</a></li>
+                <li><a href="synchronisation-github-windows.html">Synchronisation local avec GitHub</a></li>
+				<li><a href="cloner-depot-github-windows.html">Cloner un Dépôt GitHub vers local</a></li>
+				<li><a href="utilisation-git-pull-origin.html">Utilisation de git pull origin</a></li>
+				<li><a href="utilisation-git-commit-m.html">Utilisation de git commit -m</a></li>
+				<li><a href="creer-commit-invite-commande.html">Créer un Commit</a></li>
+                <li><a href="difference-cmd-bash.html">Différence entre CMD et Bash</a></li>
+                <li><a href="resolution-conflits-git.html">Résolution de conflits</a></li>
+            </ul>
+        </li>
+        <li><a href="a-propos.html">À propos</a></li>
+    </ul>
+</nav>
+<h1>ACOMDIR</h1>
+<p>Créateur des structures de développement sous forme d'arborescence prêtes à l'emploi.</p>
+<h1>Procédure pour Synchroniser un Dépôt Local avec GitHub</h1>
+</header>
+
+<div class="content">
+    <h1>Résolution de Conflits Git</h1>
+    
+    <ul>
+        <li><strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.</li>
+    </ul>
+	
+	<p>Attention : GitHub propose deux branches (répertoires dépôts) : main ou master. Nos exemples sont construites sur la branche master.</p>
+	<p>La commande <code>git branch</code> vous permet de lister toutes les branches disponibles et met en évidence la branche active avec un astérisque (*) de votre compte GitHub.</p>
+
+    <h2>Introduction aux Conflits Git</h2>
+    <p>Les conflits Git surviennent lorsque deux branches contiennent des modifications incompatibles dans le même fichier. Cela se produit fréquemment lors des opérations de <code>merge</code> ou de <code>rebase</code> où Git ne peut pas fusionner les changements automatiquement.</p>
+
+    <h2>Étape 1 : Identifier le Conflit</h2>
+    <p>Lorsqu'un conflit se produit, Git vous en informe par un message indiquant que le merge ou rebase a échoué. Vous pouvez utiliser la commande suivante pour voir les fichiers en conflit :</p>
+    <pre><code>git status</code></pre>
+    <p>Les fichiers conflictuels seront marqués comme <code>Unmerged paths</code>.</p>
+
+    <h2>Étape 2 : Résoudre le Conflit Manuellement</h2>
+    <p>Ouvrez les fichiers en conflit dans votre éditeur de texte. Git marque les conflits avec des sections comme :</p>
+    <pre><code>&lt;=&gt;
+    Conflit début
+    &lt;partie locale&gt;
+    =======
+    &lt;partie distante&gt;
+    &lt;fin du conflit&gt;
+    </code></pre>
+    <p>Vous devez choisir quelle version garder ou combiner les modifications de manière appropriée. Une fois que vous avez résolu le conflit, enregistrez les fichiers.</p>
+
+    <h2>Étape 3 : Ajouter les Modifications Résolues</h2>
+    <p>Une fois les conflits résolus, vous devez ajouter les fichiers modifiés à l'index de Git pour marquer les conflits comme résolus :</p>
+    <pre><code>git add nom_du_fichier</code></pre>
+
+    <h2>Étape 4 : Finaliser la Fusion ou Rebase</h2>
+    <p>Si vous êtes en train de fusionner (merge), finalisez avec :</p>
+    <pre><code>git commit</code></pre>
+    <p>Si vous êtes en train de faire un rebase, continuez avec :</p>
+    <pre><code>git rebase --continue</code></pre>
+
+    <h2>Étape 5 : Pousser les Modifications vers le Dépôt Distant</h2>
+    <p>Après avoir résolu le conflit et commis les changements, vous pouvez pousser vos modifications vers le dépôt distant :</p>
+    <pre><code>git push</code></pre>
+
+    <h2>Conseils Supplémentaires</h2>
+    <ul>
+        <li>Utilisez <code>git diff</code> pour voir les différences avant de résoudre un conflit.</li>
+        <li>Si vous souhaitez annuler un merge ou rebase en cours, utilisez <code>git merge --abort</code> ou <code>git rebase --abort</code>.</li>
+        <li>Il est possible d'utiliser des outils graphiques comme <strong>GitKraken</strong> ou <strong>Sourcetree</strong> pour faciliter la gestion des conflits.</li>
+    </ul>
+</div>
+<!-- Footer Section -->
+<footer>
+    <div class="footer-column">
+        <h3>About Us</h3>
+        <p>WEB DEVELLOPEMENT.</p>
+		<p>Acomdir&copy; 2025. Tous droits réservés.</p>
+    </div>
+    <div class="footer-column">
+        <h3>Services</h3>
+        <p>Création de structures de développement.</p>
+    </div>
+    <div class="footer-column">
+        <h3>Contact</h3>
+    <p>
+    <strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.
+	</p>
+    </div>
+</footer>
+</body>
+</html>

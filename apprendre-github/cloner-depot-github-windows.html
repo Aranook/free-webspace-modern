@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Procédure GitHub</title>
+	<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<header>
+<nav>
+    <ul>
+        <li><a href="../index.html" class="active">Accueil</a></li>
+        <li><a href="#">Catégories</a>
+            <ul>
+				<li><a href="creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+				<li><a href="supprimer-depot-github-Invite-commandes.html">Supprimer un Dépôt</a></li>
+                <li><a href="synchronisation-github-windows.html">Synchronisation local avec GitHub</a></li>
+				<li><a href="cloner-depot-github-windows.html">Cloner un Dépôt GitHub vers local</a></li>
+				<li><a href="utilisation-git-pull-origin.html">Utilisation de git pull origin</a></li>
+				<li><a href="utilisation-git-commit-m.html">Utilisation de git commit -m</a></li>
+				<li><a href="creer-commit-invite-commande.html">Créer un Commit</a></li>
+                <li><a href="difference-cmd-bash.html">Différence entre CMD et Bash</a></li>
+                <li><a href="resolution-conflits-git.html">Résolution de conflits</a></li>
+            </ul>
+        </li>
+        <li><a href="a-propos.html">À propos</a></li>
+    </ul>
+</nav>
+<h1>ACOMDIR</h1>
+<p>Créateur des structures de développement sous forme d'arborescence prêtes à l'emploi.</p>
+<h1>Procédure pour Synchroniser un Dépôt Local avec GitHub</h1>
+</header>
+
+<ul>
+        <li><strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.</li>
+</ul>
+
+<p>Attention : GitHub propose deux branches (répertoires dépôts) : main ou master. Nos exemples sont construites sur la branche master.</p>
+	<p>La commande <code>git branch</code> vous permet de lister toutes les branches disponibles et met en évidence la branche active avec un astérisque (*) de votre compte GitHub.</p>
+
+<h2>1. Démarrer l'Invite de Commandes en Mode Administrateur</h2>
+<ol>
+    <li>Appuyez sur la touche Windows pour ouvrir le menu Démarrer.</li>
+    <li>Tapez <strong>cmd</strong> dans la barre de recherche.</li>
+    <li>Faites un clic droit sur <strong>Invite de commandes</strong> et sélectionnez <strong>Exécuter en tant qu'administrateur</strong>.</li>
+</ol>
+
+<h2>2. Vérifier la Version de Git</h2>
+<p>Assurez-vous que Git est installé et à jour en exécutant :</p>
+<pre><code>git --version</code></pre>
+<p>Pour mettre à jour Git :</p>
+<pre><code>git update-git-for-windows</code></pre>
+
+<h2>3. Naviguer vers le Répertoire de Destination</h2>
+<p>Utilisez la commande <code>cd</code> pour vous déplacer vers le dossier où vous voulez cloner le dépôt :</p>
+<pre><code>cd C:\Utilisateurs\VotreNom\Documents\MesProjets</code></pre>
+
+<h2>4. Cloner un Dépôt GitHub</h2>
+<p>Exécutez la commande suivante pour cloner un dépôt :</p>
+<pre><code>git clone https://github.com/Aranook/Apprendre-GitHub.git</code></pre>
+<p>Cela crée un dossier local contenant les fichiers du dépôt distant.</p>
+
+<h2>5. Naviguer dans le Dépôt Cloné</h2>
+<p>Accédez au dossier cloné avec :</p>
+<pre><code>cd Apprendre-GitHub</code></pre>
+
+<h2>6. Ajouter et Valider des Modifications</h2>
+<ol>
+    <li>Ajoutez vos modifications au suivi avec :</li>
+    <pre><code>git add .</code></pre>
+    <li>Créez un commit :</li>
+    <pre><code>git commit -m "Description des modifications"</code></pre>
+</ol>
+
+<h2>7. Pousser les Modifications vers GitHub</h2>
+<p>Envoyez vos modifications au dépôt distant :</p>
+<pre><code>git push origin main</code></pre>
+<p>Remplacez <code>main</code> par le nom de votre branche si nécessaire.</p>
+
+<h2>8. Mettre à Jour depuis le Dépôt Distant</h2>
+<p>Pour synchroniser votre dépôt local avec les dernières modifications du dépôt distant :</p>
+<pre><code>git pull origin main</code></pre>
+
+<h2>9. Gérer les Branches</h2>
+<ol>
+    <li>Voir les branches disponibles :</li>
+    <pre><code>git branch</code></pre>
+    <li>Changer de branche :</li>
+    <pre><code>git checkout nom_de_branche</code></pre>
+</ol>
+
+<h2>10. Utiliser une Adresse E-mail GitHub Privée</h2>
+<p>Configurez une adresse e-mail privée pour protéger votre e-mail personnel :</p>
+<ol>
+    <li>Accédez à vos <strong>Paramètres</strong> GitHub.</li>
+    <li>Cochez <strong>Keep my email addresses private</strong>.</li>
+    <li>Utilisez l'adresse e-mail générée, par exemple : <code>username@users.noreply.github.com</code>.</li>
+</ol>
+
+<h2>Conseils Supplémentaires</h2>
+<ul>
+    <li>Créez une nouvelle branche pour chaque fonctionnalité ou correctif majeur.</li>
+    <li>Utilisez des messages de commit clairs et descriptifs.</li>
+    <li>Synchronisez régulièrement votre dépôt local avec le dépôt distant.</li>
+</ul>
+<footer>
+	<div class="footer-column">
+		<h3>About Us</h3>
+		<p>WEB DEVELLOPEMENT.</p>
+		<p>Acomdir&copy; 2025. Tous droits réservés.</p>
+	</div>
+	<div class="footer-column">
+		<h3>Services</h3>
+		<p>Création de structures de développement.</p>
+	</div>
+	<div class="footer-column">
+		<h3>Contact</h3>
+	<p>
+	<strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.
+	</p>
+	</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="style.css">
+    <title>Utilisation de git pull origin</title>
+</head>
+<body>
+<header>
+<nav>
+    <ul>
+        <li><a href="../index.html" class="active">Accueil</a></li>
+        <li><a href="#">Catégories</a>
+            <ul>
+				<li><a href="creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+				<li><a href="supprimer-depot-github-Invite-commandes.html">Supprimer un Dépôt</a></li>
+                <li><a href="synchronisation-github-windows.html">Synchronisation local avec GitHub</a></li>
+				<li><a href="cloner-depot-github-windows.html">Cloner un Dépôt GitHub vers local</a></li>
+				<li><a href="utilisation-git-pull-origin.html">Utilisation de git pull origin</a></li>
+				<li><a href="utilisation-git-commit-m.html">Utilisation de git commit -m</a></li>
+				<li><a href="creer-commit-invite-commande.html">Créer un Commit</a></li>
+                <li><a href="difference-cmd-bash.html">Différence entre CMD et Bash</a></li>
+                <li><a href="resolution-conflits-git.html">Résolution de conflits</a></li>
+            </ul>
+        </li>
+        <li><a href="a-propos.html">À propos</a></li>
+    </ul>
+</nav>
+<h1>ACOMDIR</h1>
+<p>Créateur des structures de développement sous forme d'arborescence prêtes à l'emploi.</p>
+<h1>Procédure pour Synchroniser un Dépôt Local avec GitHub</h1>
+</header>
+
+<div class="content">
+    <h1>Utilisation de <code>git pull origin master</code></h1>
+
+    <ul>
+        <li><strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.</li>
+    </ul>
+	
+	<p>Attention : GitHub propose deux branches (répertoires dépôts) : main ou master. Nos exemples sont construites sur la branche master.</p>
+	<p>La commande <code>git branch</code> vous permet de lister toutes les branches disponibles et met en évidence la branche active avec un astérisque (*) de votre compte GitHub.</p>
+
+    <h2>Introduction à <code>git pull origin master</code></h2>
+    <p>La commande <code>git pull origin master</code> est utilisée pour récupérer les dernières modifications effectuées dans un dépôt GitHub distant et les intégrer à votre dépôt local. Cette commande est une combinaison de deux actions :</p>
+    <ul>
+        <li><strong>git fetch</strong> : Récupère les modifications depuis le dépôt distant sans les appliquer.</li>
+        <li><strong>git merge</strong> : Fusionne ces modifications dans votre branche locale (ici, <code>master</code>).</li>
+    </ul>
+
+    <h2>Étape 1 : Vérifier l'état de votre dépôt local</h2>
+    <p>Avant de récupérer les modifications, il est important de vérifier l'état de votre dépôt local pour voir si des modifications locales sont en cours. Utilisez la commande suivante :</p>
+    <pre><code>git status</code></pre>
+    <p>Cela vous indiquera si vous avez des fichiers non suivis, des modifications en attente de commit, ou si votre dépôt est à jour avec le dépôt distant.</p>
+
+    <h2>Étape 2 : Utiliser la commande <code>git pull origin master</code></h2>
+    <p>Une fois votre dépôt local dans un état stable, vous pouvez exécuter la commande suivante pour récupérer les dernières modifications depuis le dépôt distant GitHub et les fusionner dans votre branche <code>master</code> locale :</p>
+    <pre><code>git pull origin master</code></pre>
+	<h2>Utiliser la commande <code>git pull origin master --force</code></h2>
+	<p>Si vous ne voulez pas intégrer les modifications distantes</p>
+	<p>Si vous êtes certain que vos changements locaux doivent écraser ceux du dépôt distant (par exemple, si vous savez que les changements distants ne sont pas pertinents), vous pouvez forcer le push. Attention, cela peut entraîner une perte de données sur le dépôt distant !</p>
+	<pre><code>git pull origin master --force</code></pre>
+
+    <h3>Explication de la commande :</h3>
+    <ul>
+        <li><strong>git pull</strong> : Récupère les modifications du dépôt distant et les applique localement.</li>
+        <li><strong>origin</strong> : Il s'agit du nom par défaut du dépôt distant. Si votre dépôt a un autre nom, remplacez-le par celui-ci.</li>
+        <li><strong>master</strong> : Il s'agit de la branche que vous souhaitez synchroniser. Si vous travaillez sur une autre branche, remplacez <code>master</code> par le nom de cette branche.</li>
+    </ul>
+
+    <h2>Étape 3 : Résoudre les conflits (si nécessaire)</h2>
+    <p>Si vous avez des modifications locales en conflit avec celles récupérées du dépôt distant, Git vous demandera de résoudre ces conflits. Vous devrez ouvrir les fichiers conflictuels et choisir quelles modifications conserver.</p>
+    <p>Après avoir résolu les conflits, ajoutez les fichiers modifiés au suivi Git et effectuez un commit pour enregistrer la résolution des conflits :</p>
+    <pre><code>git add nom_du_fichier</code></pre>
+    <pre><code>git commit -m "Résolution des conflits"</code></pre>
+
+    <h2>Étape 4 : Vérifier la synchronisation</h2>
+    <p>Une fois la commande <code>git pull origin master</code> exécutée avec succès, vous pouvez vérifier que votre branche locale est bien à jour avec le dépôt distant. Utilisez la commande suivante pour voir si tout est synchronisé :</p>
+    <pre><code>git log</code></pre>
+    <p>Cette commande affiche l'historique des commits et vous permettra de vérifier que les dernières modifications ont bien été récupérées et fusionnées.</p>
+
+    <h2>Conseils Supplémentaires</h2>
+    <ul>
+        <li>Si vous travaillez sur plusieurs branches, assurez-vous de vous placer sur la bonne branche avant d'exécuter <code>git pull</code> :</li>
+        <pre><code>git checkout nom_de_branche</code></pre>
+        <li>Pour récupérer les dernières modifications sans les fusionner, vous pouvez utiliser <code>git fetch</code> à la place de <code>git pull</code>.</li>
+        <li>Si vous avez des problèmes fréquents de conflits, envisagez d'utiliser <code>git rebase</code> à la place de <code>git merge</code> pour une gestion plus fluide des mises à jour.</li>
+    </ul>
+</div>
+<!-- Footer Section -->
+<footer>
+<div class="footer-column">
+    <h3>About Us</h3>
+    <p>WEB DEVELLOPEMENT.</p>
+	<p>Acomdir&copy; 2025. Tous droits réservés.</p>
+</div>
+<div class="footer-column">
+    <h3>Services</h3>
+    <p>Création de structures de développement.</p>
+</div>
+<div class="footer-column">
+    <h3>Contact</h3>
+<p>
+<strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.
+</p>
+</div>
+</footer>
+</body>
+</html>

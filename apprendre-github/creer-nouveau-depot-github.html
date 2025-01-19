@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Créer un Nouveau Dépôt GitHub</title>
+	<link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+<header>
+<nav>
+    <ul>
+        <li><a href="../index.html" class="active">Accueil</a></li>
+        <li><a href="#">Catégories</a>
+            <ul>
+				<li><a href="creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+				<li><a href="supprimer-depot-github-Invite-commandes.html">Supprimer un Dépôt</a></li>
+                <li><a href="synchronisation-github-windows.html">Synchronisation local avec GitHub</a></li>
+				<li><a href="cloner-depot-github-windows.html">Cloner un Dépôt GitHub vers local</a></li>
+				<li><a href="utilisation-git-pull-origin.html">Utilisation de git pull origin</a></li>
+				<li><a href="utilisation-git-commit-m.html">Utilisation de git commit -m</a></li>
+				<li><a href="creer-commit-invite-commande.html">Créer un Commit</a></li>
+                <li><a href="difference-cmd-bash.html">Différence entre CMD et Bash</a></li>
+                <li><a href="resolution-conflits-git.html">Résolution de conflits</a></li>
+            </ul>
+        </li>
+        <li><a href="a-propos.html">À propos</a></li>
+    </ul>
+</nav>
+<h1>ACOMDIR</h1>
+<p>Créateur des structures de développement sous forme d'arborescence prêtes à l'emploi.</p>
+<h1>Procédure pour Synchroniser un Dépôt Local avec GitHub</h1>
+</header>
+<div class="content">
+<h1>Créer un Nouveau Dépôt sur GitHub</h1>
+
+<ul>
+    <li><strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.</li>
+</ul>
+
+<p>Attention : GitHub propose deux branches (répertoires dépôts) : main ou master. Nos exemples sont construites sur la branche master.</p>
+<p>La commande <code>git branch</code> vous permet de lister toutes les branches disponibles et met en évidence la branche active avec un astérisque (*) de votre compte GitHub.</p>
+
+<h2>Étape 1 : Créer un Dépôt sur GitHub</h2>
+<ol>
+    <li>Connectez-vous à votre compte GitHub.</li>
+    <li>Cliquez sur le bouton <strong>New</strong> (nouveau) ou allez à <a href="https://github.com/new" target="_blank">https://github.com/new</a>.</li>
+    <li>Remplissez les informations suivantes :
+        <ul>
+            <li><strong>Repository name :</strong> Le nom de votre dépôt (exemple : <code>MonProjet</code>).</li>
+            <li><strong>Description :</strong> (optionnel) Ajoutez une courte description de votre projet.</li>
+            <li>Choisissez entre <strong>Public</strong> ou <strong>Private</strong> selon vos besoins.</li>
+            <li>Cochez <strong>Initialize this repository with a README</strong> pour ajouter un fichier README par défaut.</li>
+        </ul>
+    </li>
+    <li>Cliquez sur <strong>Create repository</strong> pour finaliser.</li>
+</ol>
+
+<h2>Étape 2 : Préparer le Dossier Local</h2>
+<p>Ouvrez l'Invite de commandes Windows et naviguez jusqu'au dossier contenant vos fichiers :</p>
+<pre><code>cd chemin\vers\votre\dossier</code></pre>
+
+<h2>Étape 3 : Initialiser Git dans le Dossier Local</h2>
+<p>Si le dossier n'est pas déjà un dépôt Git, initialisez-le :</p>
+<pre><code>git init</code></pre>
+<p>Cela créera un sous-dossier <code>.git</code> pour suivre les modifications.</p>
+
+<h2>Étape 4 : Lier le Dépôt Local au Dépôt GitHub</h2>
+<p>Ajoutez l'URL du dépôt distant :</p>
+<pre><code>git remote add origin https://github.com/VotreNomUtilisateur/MonProjet.git</code></pre>
+
+<h2>Étape 5 : Ajouter les Fichiers au Dépôt Local</h2>
+<p>Ajoutez tous les fichiers du dossier au suivi Git :</p>
+<pre><code>git add .</code></pre>
+<p>Pour ajouter des fichiers spécifiques, utilisez :</p>
+<pre><code>git add nom_du_fichier</code></pre>
+
+<h2>Étape 6 : Créer un Commit</h2>
+<p>Enregistrez vos modifications avec un message descriptif :</p>
+<pre><code>git commit -m "Premier commit : ajout des fichiers du projet"</code></pre>
+
+<h2>Étape 7 : Pousser les Modifications vers GitHub</h2>
+<p>Envoyez les fichiers et l'historique des modifications vers le dépôt distant :</p>
+<pre><code>git push -u origin main</code></pre>
+<p>Si la branche principale porte un autre nom (comme <code>master</code>), remplacez <code>main</code> par le nom correct.</p>
+
+<h2>Conseils Supplémentaires</h2>
+<ul>
+    <li>Utilisez <code>git status</code> pour vérifier l'état du dépôt local.</li>
+    <li>Utilisez <code>git pull origin main</code> pour synchroniser votre dépôt local avec les dernières modifications du dépôt distant.</li>
+</ul>
+</div>
+<footer>
+<div class="footer-column">
+	<h3>About Us</h3>
+	<p>WEB DEVELLOPEMENT.</p>
+	<p>Acomdir&copy; 2025. Tous droits réservés.</p>
+</div>
+<div class="footer-column">
+	<h3>Services</h3>
+	<p>Création de structures de développement.</p>
+</div>
+<div class="footer-column">
+	<h3>Contact</h3>
+<p>
+<strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.
+</p>
+</div>
+</footer>
+</body>
+</html>

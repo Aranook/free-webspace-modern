@@ -1,0 +1,17 @@
+# .gitignore pour ignorer les fichiers
+## Auteur : ACOMDIR
+## Url contact: https://www.facebook.com/acomdir/
+## Please come vote my page Facebook to support me in the development of this open source project.
+
+# Ignorer le fichier .env
+.env
+
+# Ignorer les fichiers de cache Python
+__pycache__/
+*.pyc
+
+# Ignorer les fichiers de dépendances
+*.egg-info/
+
+# Ignorer les fichiers d'environnement virtuel
+venv/

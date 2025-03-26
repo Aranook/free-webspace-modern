@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="style.css">
+    <title>Structurer un projet</title>
+</head>
+<body>
+<header>
+<nav>
+    <ul>
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="#">Catégories</a>
+            <ul>
+                <li><a href="#">Apprendre sur GitHub</a>
+                    <ul>
+                        <li><a href="apprendre-github/creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+						<li><a href="apprendre-github/creer-nouveau-depot-github.html">Créer un Nouveau Dépôt</a></li>
+						<li><a href="apprendre-github/supprimer-depot-github-Invite-commandes.html">Supprimer un Dépôt</a></li>
+						<li><a href="apprendre-github/synchronisation-github-windows.html">Synchronisation local avec GitHub</a></li>
+						<li><a href="apprendre-github/cloner-depot-github-windows.html">Cloner un Dépôt GitHub vers local</a></li>
+						<li><a href="apprendre-github/utilisation-git-pull-origin.html">Utilisation de git pull origin</a></li>
+						<li><a href="apprendre-github/utilisation-git-commit-m.html">Utilisation de git commit -m</a></li>
+						<li><a href="apprendre-github/creer-commit-invite-commande.html">Créer un Commit</a></li>
+						<li><a href="apprendre-github/difference-cmd-bash.html">Différence entre CMD et Bash</a></li>
+						<li><a href="apprendre-github/resolution-conflits-git.html">Résolution de conflits</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><a href="apprendre-github/a-propos.html">À propos</a></li>
+		<li><a href="https://www.facebook.com/acomdir/" target="_blank">Acomdir</a></li>
+    </ul>
+</nav>
+<h1>ACOMDIR</h1>
+<p>Spécialiste en recherche et analyse des nouvelles technologies de conception sécurisée des systèmes d'information, avec une expertise dans la création de structures de développement arborescentes prêtes à l'emploi.</p>
+<h1>Open source projet</h1>
+</header>
+
+<section>
+<!-- Expandable Section -->
+<details>
+<summary><strong>Dépôt GitHub</strong></summary>
+<pre><code>https://github.com/Aranook/free-webspace-modern.git</code></pre>
+</details>
+    <h2>Introduction</h2>
+    <p>Rust est un langage de programmation système multi-paradigme, fortement typé et axé sur la sécurité et la performance. Il est conçu pour éviter les erreurs de mémoire courantes, telles que les accès concurrents non sécurisés ou les dépassements de tampon. Rust adopte un modèle de gestion de mémoire basé sur l'emprunt et la propriété, éliminant ainsi le besoin d'un ramasse-miettes (garbage collector).</p>
+</section>
+
+<section>
+    <h2>Principe de fonctionnement</h2>
+    <p>Rust repose sur un système de <strong>propriété, emprunt et durée de vie</strong> qui garantit la sécurité mémoire et la concurrence sans nécessiter de garbage collector. Son compilateur effectue des vérifications strictes à la compilation pour éviter les accès concurrents non sécurisés et les fuites de mémoire. Il utilise également un typage statique pour détecter les erreurs avant l'exécution.</p>
+</section>
+
+<section>
+    <h2>Cible système de développement</h2>
+    <p>Rust est conçu pour être utilisé dans divers environnements de développement, notamment :</p>
+    <ul>
+        <li><strong>Systèmes embarqués</strong> : grâce à son faible coût en mémoire et en performances.</li>
+        <li><strong>Développement système</strong> : création de noyaux d'OS, pilotes et logiciels bas-niveau.</li>
+        <li><strong>Applications web</strong> : via WebAssembly pour exécuter du code Rust dans un navigateur.</li>
+        <li><strong>Développement cloud et microservices</strong> : grâce à sa rapidité et sa sécurité.</li>
+        <li><strong>Blockchain et cryptographie</strong> : souvent utilisé dans le développement d'infrastructures sécurisées.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Méthode d'installation</h2>
+    <h3>Installation via rustup</h3>
+    <pre><code>
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+rustc --version
+    </code></pre>
+</section>
+
+<section>
+    <h2>Types de compilateurs nécessaires</h2>
+    <p>Rust utilise principalement le compilateur <strong>rustc</strong>, qui est basé sur LLVM. Il permet de générer du code machine optimisé et portable. Pour certains cas spécifiques, d'autres compilateurs et outils sont utilisés :</p>
+    <ul>
+        <li><strong>LLVM (Low-Level Virtual Machine)</strong> : infrastructure de compilation utilisée par rustc pour l'optimisation et la génération de code.</li>
+        <li><strong>Clang</strong> : utilisé indirectement via LLVM pour certaines optimisations et interactions avec le code C.</li>
+        <li><strong>MIR (Mid-level Intermediate Representation)</strong> : une représentation intermédiaire utilisée par rustc pour optimiser et analyser le code.</li>
+        <li><strong>Cranelift</strong> : un backend de compilation alternatif utilisé pour des compilations rapides.</li>
+        <li><strong>rust-gcc</strong> : une expérimentation visant à intégrer un backend GCC pour Rust.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Avantages et inconvénients</h2>
+    <h3>Avantages</h3>
+    <ul>
+        <li><strong>Sécurité mémoire garantie</strong> : grâce à son modèle de propriété.</li>
+        <li><strong>Haute performance</strong> : comparable à C et C++.</li>
+        <li><strong>Absence de garbage collector</strong> : améliore le contrôle des ressources.</li>
+        <li><strong>Vaste écosystème</strong> : gestion de paquets avec Cargo.</li>
+        <li><strong>Bonne documentation et communauté active</strong>.</li>
+        <li><strong>Interopérabilité avec C</strong> : via <code>unsafe</code> et FFI.</li>
+    </ul>
+    
+    <h3>Inconvénients</h3>
+    <ul>
+        <li><strong>Courbe d’apprentissage abrupte</strong> : le système de propriété peut être difficile à maîtriser.</li>
+        <li><strong>Temps de compilation plus long</strong> : en raison des vérifications de sécurité strictes.</li>
+        <li><strong>Écosystème encore jeune</strong> : bien que dynamique, il manque parfois certaines bibliothèques matures comparées à C++ ou Python.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Conclusion</h2>
+    <p>Rust est un excellent choix pour les développeurs cherchant un langage performant et sécurisé, particulièrement pour les applications nécessitant une gestion fine de la mémoire et des performances élevées.</p>
+</section>
+
+
+<!-- Footer Section -->
+<footer>
+    <div class="footer-column">
+        <h3>About Us</h3>
+        <p>WEB DEVELLOPEMENT.</p>
+		<p>Acomdir&copy; 2025. Tous droits réservés.</p>
+    </div>
+    <div class="footer-column">
+        <h3>Services</h3>
+        <p>Création de structures de développement.</p>
+    </div>
+    <div class="footer-column">
+        <h3>Contact</h3>
+    <p>
+    <strong>Auteur : ACOMDIR </strong><a href="https://www.facebook.com/acomdir/" target="_blank">https://www.facebook.com/acomdir/</a>.
+	</p>
+    </div>
+</footer>
+</body>
+</html>

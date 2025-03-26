@@ -3,6 +3,9 @@
 ## Type de langage
 Rust est un langage de programmation système multi-paradigme, fortement typé et axé sur la sécurité et la performance. Il est conçu pour éviter les erreurs de mémoire courantes, telles que les accès concurrents non sécurisés ou les dépassements de tampon. Rust adopte un modèle de gestion de mémoire basé sur l'emprunt et la propriété, éliminant ainsi le besoin d'un ramasse-miettes (garbage collector).
 
+## Principe de fonctionnement
+Rust repose sur un système de **propriété, emprunt et durée de vie** qui garantit la sécurité mémoire et la concurrence sans nécessiter de garbage collector. Son compilateur effectue des vérifications strictes à la compilation pour éviter les accès concurrents non sécurisés et les fuites de mémoire. Il utilise également un typage statique pour détecter les erreurs avant l'exécution.
+
 ## Cible système de développement
 Rust est conçu pour être utilisé dans divers environnements de développement, notamment :
 - **Systèmes embarqués** : grâce à son faible coût en mémoire et en performances.
@@ -28,6 +31,14 @@ L'installation de Rust peut être effectuée en utilisant `rustup`, l'outil offi
    ```sh
    rustc --version
    ```
+
+## Types de compilateurs nécessaires
+Rust utilise principalement le compilateur `rustc`, qui est basé sur LLVM. Il permet de générer du code machine optimisé et portable. Pour certains cas spécifiques, d'autres compilateurs et outils sont utilisés :
+- **LLVM (Low-Level Virtual Machine)** : infrastructure de compilation utilisée par `rustc` pour l'optimisation et la génération de code.
+- **Clang** : utilisé indirectement via LLVM pour certaines optimisations et interactions avec le code C.
+- **MIR (Mid-level Intermediate Representation)** : une représentation intermédiaire utilisée par `rustc` pour optimiser et analyser le code.
+- **Cranelift** : un backend de compilation alternatif utilisé pour des compilations rapides.
+- **rust-gcc** : une expérimentation visant à intégrer un backend GCC pour Rust.
 
 ## Avantages et inconvénients
 

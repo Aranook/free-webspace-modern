@@ -40,7 +40,7 @@ L'utilisation des balises `<meta>` permet d'améliorer la sécurité d'un site w
 ## 4. Politique de Sécurité du Contenu (CSP)
 
 ```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none';">
 ```
 
 ### Explication
@@ -48,6 +48,7 @@ L'utilisation des balises `<meta>` permet d'améliorer la sécurité d'un site w
 - **`default-src 'self'`** : Seuls les fichiers hébergés sur le même domaine sont autorisés.
 - **`script-src 'self'`** : Autorise uniquement les scripts du site.
 - **`style-src 'self' 'unsafe-inline'`** : Autorise les styles du site, y compris ceux en ligne (à éviter si possible).
+- **`frame-ancestors 'none'`** : Empêche l'intégration du site dans un iframe pour éviter les attaques de clickjacking.
 
 🔹 [Référence détaillée sur CSP](https://developer.mozilla.org/fr/docs/Web/HTTP/CSP)
 
@@ -131,11 +132,23 @@ Header always set Content-Security-Policy "upgrade-insecure-requests;"
 ```
 Cela forcera toutes les requêtes HTTP à utiliser HTTPS.
 
-### b) Protection contre les attaques XSS
+### b) Protection contre les attaques XSS (obsolète)
 ```html
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
 ```
 - **1; mode=block** : active la protection contre les scripts intersites (XSS).
+- ⚠️ **Note** : Cette option est obsolète sur les navigateurs modernes et remplacée par CSP.
+
+### c) Sécurité HSTS (Strict-Transport-Security)
+HSTS ne peut pas être défini via `<meta>`, mais doit être configuré côté serveur :
+```apache
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+```
+- **max-age=31536000** : Force HTTPS pendant un an.
+- **includeSubDomains** : Applique la règle à tous les sous-domaines.
+- **preload** : Permet d'ajouter le site à la liste HSTS des navigateurs.
+
+🔹 [En savoir plus sur HSTS](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Strict-Transport-Security)
 
 ## Conclusion
 

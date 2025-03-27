@@ -118,6 +118,7 @@ body::-webkit-scrollbar-thumb:hover {
 body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
+	font-size: 0.9em;
     color: var(--main-text-color);
     background-color: var(--main-bg-color);
     padding: 0 var(--padding);
@@ -160,6 +161,7 @@ nav > ul > li {
 }
 nav a {
     color: white;
+	font-size: 0.9em;
     text-decoration: none;
     padding: 10px 15px;
     display: inline-block;

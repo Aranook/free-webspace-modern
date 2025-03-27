@@ -117,6 +117,7 @@ body::-webkit-scrollbar-thumb:hover {
 /* Body and Typography */
 body {
     font-family: 'Roboto', sans-serif;
+    font-size: 0.8em;
     line-height: 1.6;
     color: var(--main-text-color);
     background-color: var(--main-bg-color);
@@ -202,17 +203,11 @@ nav a.active {
     background-color: #6c757d;
     color: white;
 }
+
 /* section */
 section {
-            padding: 20px;
-            margin: 20px;
-            background: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-/* section */
-section {
-            padding: 20px;
-            margin: 20px;
+            padding: 5px;
+            margin: 5px;
             background: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }

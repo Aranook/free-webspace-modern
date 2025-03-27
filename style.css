@@ -204,8 +204,8 @@ nav a.active {
 }
 /* section */
 section {
-            padding: 20px;
-            margin: 20px;
+            padding: 5px;
+            margin: 5px;
             background: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }

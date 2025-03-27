@@ -54,6 +54,17 @@ fn main() {
 }
 ```
 
+## Tableau récapitulatif des concepts
+
+| Concept          | Explication simple |
+|-----------------|-------------------|
+| **Mutex<T>**    | Le couvercle du bocal qui empêche plusieurs enfants d’y accéder en même temps. |
+| **Arc<T>**      | Un plan permettant à plusieurs enfants de savoir où est le bocal. |
+| **thread::spawn** | Un enfant qui court vers le bocal. |
+| **lock()**       | Ouvre le bocal (prend le Mutex). |
+| **unwrap()**     | Vérifie si l’enfant a bien réussi à ouvrir le bocal. |
+| **join()**       | Attend que tous les enfants aient fini avant d’annoncer le résultat. |
+
 ## Résumé Final
 - **Le bocal de bonbons** = Ressource partagée
 - **Les enfants** = Threads
@@ -70,4 +81,4 @@ Un enfant prend un bonbon. Restant : 5
 Bonbons restants dans le bocal : 5
 ```
 
-Rust nous assure que tout fonctionne **sans conflit** et **sans accès concurrent dangereux**. 🎉
+Rust nous assure que tout fonctionne **sans conflit** et **sans accès concurrent dangereux**.

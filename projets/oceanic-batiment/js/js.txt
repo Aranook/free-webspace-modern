@@ -1,0 +1,22 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const banner = document.getElementById("cookie-banner");
+  const acceptBtn = document.getElementById("accept-cookies");
+  const declineBtn = document.getElementById("decline-cookies");
+
+  // Vérifie si le choix a déjà été fait
+  if (!localStorage.getItem("cookieConsent")) {
+    banner.style.display = "flex";
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "accepted");
+    banner.style.display = "none";
+    // Ici, vous pouvez activer vos scripts de suivi
+  });
+
+  declineBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "declined");
+    banner.style.display = "none";
+    // Vous bloquez ici les cookies non essentiels
+  });
+});

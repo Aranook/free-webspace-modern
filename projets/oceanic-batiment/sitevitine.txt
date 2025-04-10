@@ -1,0 +1,153 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Océanic Bâtiment - Accueil</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Océanic Bâtiment</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="mentions.html">Mentions légales</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Bienvenue chez Océanic Bâtiment</h2>
+    <p>Spécialiste de la couverture, rénovation et entretien de toitures à Loperhet et ses environs.</p>
+  </main>
+  <footer>
+    <p>Océanic Bâtiment - 15 route de Plougastel, 29470 Loperhet</p>
+  </footer>
+</body>
+</html>
+
+<!-- services.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nos Services - Océanic Bâtiment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Nos Services</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="mentions.html">Mentions légales</a>
+    </nav>
+  </header>
+  <main>
+    <ul>
+      <li>Travaux de couverture (tuiles, ardoises, zinc)</li>
+      <li>Pose de fenêtres de toit (Velux)</li>
+      <li>Rénovation et entretien de toiture</li>
+      <li>Étanchéité et isolation</li>
+    </ul>
+  </main>
+  <footer>
+    <p>Contactez-nous au 02 98 42 12 84</p>
+  </footer>
+</body>
+</html>
+
+<!-- contact.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - Océanic Bâtiment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Contact</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="mentions.html">Mentions légales</a>
+    </nav>
+  </header>
+  <main>
+    <p>Adresse : 15 route de Plougastel, 29470 Loperhet</p>
+    <p>Téléphone : 02 98 42 12 84</p>
+    <p>Email : contact@oceanicbatiment.fr</p>
+  </main>
+  <footer>
+    <p>Océanic Bâtiment © 2025</p>
+  </footer>
+</body>
+</html>
+
+<!-- mentions.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentions légales - Océanic Bâtiment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Mentions légales</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="mentions.html">Mentions légales</a>
+    </nav>
+  </header>
+  <main>
+    <p>Raison sociale : Océanic Bâtiment</p>
+    <p>Adresse : 15 route de Plougastel, 29470 Loperhet</p>
+    <p>Téléphone : 02 98 42 12 84</p>
+    <p>Responsable de publication : Jean Martin</p>
+    <p>Hébergeur : OVH, 2 rue Kellermann, 59100 Roubaix</p>
+  </main>
+  <footer>
+    <p>© Océanic Bâtiment 2025</p>
+  </footer>
+</body>
+</html>
+
+<!-- style.css -->
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+  color: #333;
+}
+
+header, footer {
+  background-color: #007b8a;
+  color: white;
+  padding: 1em;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}

@@ -17,10 +17,22 @@
     initial-value: #007BFF;
 }
 
+@property --primary-hero-title-color {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #333;
+}
+
 @property --secondary-color {
     syntax: '<color>';
     inherits: false;
     initial-value: #555;
+}
+
+@property --theme-bg-color {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #f7ab00;
 }
 
 @property --nav-bg-color {
@@ -45,12 +57,6 @@
     syntax: '<time>';
     inherits: false;
     initial-value: 0.3s;
-}
-
-@property --box-shadow {
-  syntax: '<length> <length> <length> <color>';
-  initial-value: 0 4px 8px rgba(0, 0, 0, 0.1);
-  inherits: false;
 }
 
 @property --pre-bg-color {
@@ -85,6 +91,8 @@
     --pre-bg-color: #f4f4f4;
     --pre-border-color: #007BFF;
     --code-bg-color: #e4e4e4;
+	--shadow-color: rgba(0, 0, 0, 0.1);
+	--shadow-blur: 8px;
 }
 
 /* Basic Reset */
@@ -117,31 +125,52 @@ body::-webkit-scrollbar-thumb:hover {
 /* Body and Typography */
 body {
     font-family: 'Roboto', sans-serif;
-    font-size: 0.8em;
     line-height: 1.6;
+	font-size: 0.9em;
     color: var(--main-text-color);
     background-color: var(--main-bg-color);
     padding: 0 var(--padding);
 }
 
-h1, h2 {
+h1, h2, h3 {
     color: var(--primary-color);
-    margin-bottom: 20px;
 }
 
 h1 {
     font-size: 1.2em;
     margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 h2 {
-    font-size: 1em;
+    font-size: 1.2em;
     margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1em;
+    margin-top: 3px;
+	margin-bottom: 20px;
+}
+
+/* Body and Typography class */
+.hero-title {
+    color: transparent;
+    background: linear-gradient(90deg, var(--primary-hero-title-color), #ff8a00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    animation: fadeInDown 0.8s ease-out;
 }
 
 /* Navigation */
 nav {
-    background-color: #a12c2c;
+    background-color: var(--nav-bg-color);
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -161,7 +190,6 @@ nav > ul > li {
 }
 nav a {
     color: white;
-    font-size: 0.9em;
     text-decoration: none;
     padding: 10px 15px;
     display: inline-block;
@@ -205,19 +233,6 @@ nav a.active {
     color: white;
 }
 
-/* Cette classe assure que le titre prend toute la largeur de l'élément li */
-.submenu-title {
-    display: block;  /* L'élément span devient un bloc pour occuper toute la largeur */
-    width: 100%;     /* La largeur de 100% correspond à la largeur de son parent li */
-    padding: 10px;   /* Espace autour du titre */
-    background-color: #f0f0f0;  /* Fond coloré pour mieux voir le titre */
-    font-size: 0.9em;  /* Taille du texte */
-    font-weight: bold; /* Gras pour le titre */
-    color: #333;      /* Couleur du texte */
-    text-align: left; /* Alignement du texte à gauche */
-}
-
-/* section */
 section {
             padding: 5px;
             margin: 5px;
@@ -239,13 +254,16 @@ pre {
     border-left: 5px solid var(--pre-border-color);
     border-radius: 4px;
     overflow-x: auto;
+	white-space: pre-wrap; /* Permet le retour à la ligne */
+    word-wrap: break-word; /* Casse les mots longs si nécessaire */
 }
 
 code {
     color: var(--primary-color);
-    background-color: var(--code-bg-color);
+    background-color: var(none);
     padding: 3px 6px;
     border-radius: 4px;
+	word-break: break-word; /* Casse les mots longs dans <code> */
 }
 
 ul, ol {
@@ -367,11 +385,66 @@ details p, details pre {
     margin-bottom: 20px;
 }
 
+.photo-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Permet de passer à la ligne si l’espace est insuffisant */
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.photo-grid img {
+    width: calc(33.333% - 13.33px); /* 3 images avec espace entre */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    height: auto;
+}
+
+.photo-item {
+    text-align: left;
+    flex: 1 1 calc(33.333% - 13.33px); /* pour 3 par ligne avec espace */
+}
+
+.photo-item img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 10px;
+	height: auto;
+}
+
+.photo-item h3 {
+	color: var(--primary-color);
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.photo-item p {
+    font-size: 14px;
+    color: #666;
+}
+
+.photo-grid-mono {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Permet de passer à la ligne si l’espace est insuffisant */
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.photo-grid-mono img {
+    width: calc(100% - 0.33px); /* 1 images avec espace entre */
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    height: auto;
+}
+
 /* Card */
 .card {
     background: white;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px var(--shadow-blur) var(--shadow-color)
     overflow: hidden;
     padding: var(--padding);
     margin-bottom: 20px;
@@ -482,7 +555,7 @@ details p, details pre {
 
 /* Header */
 header {
-    background-color: var(--nav-bg-color);
+    background-color: var(--theme-bg-color);
     color: white;
     padding: var(--padding);
     border-radius: var(--border-radius);
@@ -505,12 +578,16 @@ footer {
     background-color: var(--nav-bg-color);
     color: white;
     padding: var(--padding);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+}
+
+/* Flex */
+.footer-wrapper {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-	flex-wrap: wrap; /* Permet de faire passer les colonnes à la ligne si nécessaire */
+    flex-wrap: wrap; /* utile en responsive */
 }
 
 footer .footer-column {
@@ -529,6 +606,33 @@ footer .footer-column h3 {
 
 footer .footer-column p {
     margin: 0;
+	text-align: left;
+	font-size: 0.9em;
+}
+
+.p-gauche {
+  text-align: left;
+}
+
+#scrollToTop {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+  display: none;
+  background-color: var(--main-bg-color);
+  color: black;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: var(--box-shadow);
+  transition: opacity 0.3s ease;
+}
+
+#scrollToTop:hover {
+  background-color: var(--accent-color);
 }
 
 /* Début style des animations */
@@ -601,6 +705,13 @@ footer .footer-column p {
     transition: all var(--transition-duration) cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.scene {
+    width: 90%;
+    max-width: 650px;
+    height: 220px;
+    perspective: 1000px;
+}
+
 /* Effets 3D */
 .perspective {
     perspective: 1000px;
@@ -613,6 +724,39 @@ footer .footer-column p {
 }
 
 .card-3d:hover {
+    transform: rotateY(180deg);
+}
+
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+}
+
+.card:hover .face {
+    transform: scale(1.03);
+}
+
+.front {
+    background-image: url('images/chantiers/charpente-1.webp');
+}
+
+.back {
+    background-image: url('images/chantiers/charpente-1.webp');
     transform: rotateY(180deg);
 }
 
@@ -760,8 +904,54 @@ footer .footer-column p {
 
 /* Fin style des animations */
 
+/* cookie-banner */
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #222;
+  color: white;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+.cookie-banner p {
+  margin: 0;
+  font-size: 0.9em;
+}
+.cookie-banner a {
+  color: #4fc3f7;
+  text-decoration: underline;
+}
+.cookie-banner button {
+  margin-left: 10px;
+  padding: 0.5em 1em;
+  background-color: #4fc3f7;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+
 /* Média queries Footer pour les petits écrans */
 @media (max-width: 768px) {
+	
+	/* Affichage en colonne sur petit écran */
+    .photo-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .photo-grid img {
+        width: 100%;
+    }
+	
     footer {
         flex-direction: column; /* Organise le footer en colonne pour les petits écrans */
         align-items: center; /* Centre les éléments dans le footer */

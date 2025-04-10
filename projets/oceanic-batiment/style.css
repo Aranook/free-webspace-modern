@@ -956,6 +956,16 @@ footer .footer-column p {
 		box-sizing: border-box;
 	}
 	
+	/* Body and Typography */
+	body {
+		font-family: 'Roboto', sans-serif;
+		line-height: 1.6;
+		font-size: 0.9em;
+		color: var(--main-text-color);
+		background-color: var(--main-bg-color);
+		padding: 0;
+	}
+	
 	/* Affichage nav reduit */
 	nav a {
     color: white;

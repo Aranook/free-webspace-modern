@@ -946,7 +946,7 @@ footer .footer-column p {
 	@property --padding {
     syntax: '<length>';
     inherits: false;
-    initial-value: 5px;
+    initial-value: 2px;
 	}
 	
 	/* Basic Reset */
@@ -963,7 +963,17 @@ footer .footer-column p {
 		font-size: 0.9em;
 		color: var(--main-text-color);
 		background-color: var(--main-bg-color);
-		padding: 0;
+		padding: 0 var(--padding);
+	}
+	
+	/* Header */
+	header {
+		background-color: var(--theme-bg-color);
+		color: white;
+		padding: var(--padding);
+		border-radius: var(--border-radius);
+		box-shadow: var(--box-shadow);
+		margin-bottom: 30px;
 	}
 	
 	/* Affichage nav reduit */

@@ -943,6 +943,19 @@ footer .footer-column p {
 /* Média queries Footer pour les petits écrans */
 @media (max-width: 768px) {
 	
+	@property --padding {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 5px;
+	}
+	
+	/* Basic Reset */
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	
 	/* Affichage nav reduit */
 	nav a {
     color: white;

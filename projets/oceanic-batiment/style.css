@@ -939,6 +939,17 @@ footer .footer-column p {
   border-radius: 5px;
 }
 
+/* config boutons lecture */
+button {
+  margin: 2px;
+  padding: 2px 2px;
+  border: 2px solid #333;
+  border-radius: 5px;
+}
+
+label {
+  margin-right: 3px;
+}
 
 /* Média queries Footer pour les petits écrans */
 @media (max-width: 768px) {

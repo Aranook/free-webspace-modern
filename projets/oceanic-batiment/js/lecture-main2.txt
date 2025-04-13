@@ -1,7 +1,6 @@
 // outil de lecture du texte contenu dans body
 let utterance;
 let synth = window.speechSynthesis;
-let voixDisponibles = [];
 
 //function getTextFromPage() {
 // return document.body.textContent;
@@ -10,11 +9,6 @@ let voixDisponibles = [];
 function getTextFromMain() {
   const main = document.querySelector('main');
   return main ? main.textContent : '';
-}
-
-// Vérifie que la synthèse vocale est supportée
-if (!('speechSynthesis' in window)) {
-  alert('La synthèse vocale n’est pas supportée par ce navigateur.');
 }
 
 // Remplit le menu déroulant avec les voix disponibles en français
@@ -36,25 +30,13 @@ function lire() {
 
   //utterance = new SpeechSynthesisUtterance(getTextFromPage());
   utterance = new SpeechSynthesisUtterance(getTextFromMain());
-  const vitesseInput = document.getElementById('vitesse');
-  const rate = vitesseInput ? parseFloat(vitesseInput.value) || 1 : 1;
-
   utterance.lang = 'fr-FR';
-  utterance.rate = rate;
+  utterance.rate = parseFloat(document.getElementById('vitesse').value);
   
   const voixIndex = document.getElementById('voix').value;
   if (voixDisponibles[voixIndex]) {
     utterance.voice = voixDisponibles[voixIndex];
   }
-  
-  // BONUS UX
-  utterance.onstart = () => {
-    document.getElementById('btnLire').disabled = true;
-  };
-
-  utterance.onend = () => {
-    document.getElementById('btnLire').disabled = false;
-  };
   
   synth.speak(utterance);
 }
@@ -68,10 +50,7 @@ function resume() {
 }
 
 function stop() {
-  if (synth.speaking) {
-    synth.cancel();
-    document.getElementById('btnLire').disabled = false;
-  }
+  if (synth.speaking) synth.cancel();
 }
 
 function updateVitesse() {

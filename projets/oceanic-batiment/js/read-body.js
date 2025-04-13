@@ -24,28 +24,26 @@ function populateVoix() {
   });
 }
 
-// Fonction pour découper le texte en phrases, utilisées pour la lecture phrase par phrase
+// Fonction pour découper le texte en phrases
 function splitTextToPhrases(text) {
   return text.match(/[^.!?\n]+[.!?\n]*/g) || [];
 }
 
-// Fonction qui commence la lecture
+// Fonction pour commencer la lecture
 function lire() {
-  stop(); // réinitialiser tout
+  stop();
   phrases = splitTextToPhrases(getTextFromMain());
   currentPhraseIndex = 0;
   isPaused = false;
   isStopped = false;
-
-  updateUIStart(); // Mise à jour de l'UI pour démarrer la lecture
-
+  updateUIStart();
   lirePhrase(currentPhraseIndex);
 }
 
 // Fonction pour lire une phrase spécifique
 function lirePhrase(index) {
   if (index >= phrases.length || isStopped) {
-    finLecture(); // Si on a atteint la fin ou l'arrêt, on termine
+    finLecture();
     return;
   }
 
@@ -64,52 +62,52 @@ function lirePhrase(index) {
     if (!isPaused && !isStopped) {
       currentPhraseIndex++;
       updateProgressBar(currentPhraseIndex / phrases.length);
-      lirePhrase(currentPhraseIndex); // Lecture de la prochaine phrase
+      lirePhrase(currentPhraseIndex);
     }
   };
 
   synth.speak(utterance);
 }
 
-// Fonction de pause
+// Pause
 function pause() {
   if (!isPaused && synth.speaking) {
     isPaused = true;
-    synth.pause(); // Utilisation de pause pour ne pas annuler la lecture
-    updateUIPause(); // Mise à jour de l'UI pour la pause
+    synth.pause();
+    updateUIPause();
   }
 }
 
-// Fonction pour reprendre la lecture après une pause
+// Reprise
 function resume() {
   if (isPaused) {
     isPaused = false;
-    updateUIResume(); // Mise à jour de l'UI pour la reprise
-    synth.resume(); // Reprendre la lecture là où elle a été arrêtée
+    updateUIResume();
+    synth.resume();
   }
 }
 
-// Fonction pour arrêter la lecture
+// Stop
 function stop() {
   isStopped = true;
   isPaused = false;
-  synth.cancel(); // Annule toute lecture en cours
-  currentPhraseIndex = 0; // Réinitialise l'index de la phrase
-  updateUIStop(); // Mise à jour de l'UI pour arrêter
+  synth.cancel();
+  currentPhraseIndex = 0;
+  updateUIStop();
 }
 
-// Fonction pour la fin de la lecture, met à jour la barre de progression et l'UI
+// Fin de lecture
 function finLecture() {
-  updateProgressBar(1); // Barre de progression complète
-  updateUIStop(); // Mise à jour de l'UI à l'arrêt
+  updateProgressBar(1);
+  updateUIStop();
 }
 
-// Fonction pour mettre à jour la barre de progression en fonction du ratio passé
+// Mise à jour de la barre de progression
 function updateProgressBar(ratio) {
   document.getElementById('progressBar').style.width = `${Math.min(ratio * 100, 100)}%`;
 }
 
-// Fonction pour mettre à jour la vitesse de lecture
+// Mise à jour vitesse
 function updateVitesse() {
   const val = document.getElementById('vitesse').value;
   document.getElementById('valeurVitesse').textContent = val;
@@ -117,30 +115,25 @@ function updateVitesse() {
 
 // === UI state changes ===
 
-// Mise à jour de l'UI au début de la lecture
 function updateUIStart() {
   const btnLire = document.getElementById('btnLire');
   btnLire.disabled = true;
   btnLire.classList.add('en-lecture');
   btnLire.textContent = 'Lecture...';
-
   document.getElementById('btnPause').classList.remove('en-pause');
   document.getElementById('btnResume').classList.remove('en-resume');
 }
 
-// Mise à jour de l'UI lors de la pause
 function updateUIPause() {
   document.getElementById('btnPause').classList.add('en-pause');
   document.getElementById('btnResume').classList.remove('en-resume');
 }
 
-// Mise à jour de l'UI lors de la reprise
 function updateUIResume() {
   document.getElementById('btnResume').classList.add('en-resume');
   document.getElementById('btnPause').classList.remove('en-pause');
 }
 
-// Mise à jour de l'UI lors de l'arrêt
 function updateUIStop() {
   const btnLire = document.getElementById('btnLire');
   btnLire.disabled = false;
@@ -148,24 +141,69 @@ function updateUIStop() {
   btnLire.textContent = 'Lire';
   document.getElementById('btnPause').classList.remove('en-pause');
   document.getElementById('btnResume').classList.remove('en-resume');
-  updateProgressBar(0); // Barre de progression à 0%
+  updateProgressBar(0);
 }
 
 // === DOM Ready ===
 window.addEventListener('DOMContentLoaded', () => {
-  // Ajout des événements sur les boutons et la vitesse
+  // Boutons
   document.getElementById('btnLire').addEventListener('click', lire);
   document.getElementById('btnPause').addEventListener('click', pause);
   document.getElementById('btnResume').addEventListener('click', resume);
   document.getElementById('btnStop').addEventListener('click', stop);
   document.getElementById('vitesse').addEventListener('input', updateVitesse);
 
-  populateVoix(); // Remplir la liste des voix disponibles
-  // S'assurer que les voix sont bien chargées
+  // Voix
+  populateVoix();
   if (speechSynthesis.onvoiceschanged !== undefined) {
     speechSynthesis.onvoiceschanged = populateVoix;
   }
+  if (!voixDisponibles.length) populateVoix();
 
-  // Sécuriser si aucune voix n'est disponible
-  if (!voixDisponibles.length) populateVoix(); // Garantir que les voix sont toujours disponibles
+  // Navigation dans la barre de progression
+  const progressContainer = document.getElementById('progressContainer');
+  const tooltip = document.createElement('div');
+  tooltip.id = 'progressTooltip';
+  tooltip.style.position = 'absolute';
+  tooltip.style.background = '#333';
+  tooltip.style.color = '#fff';
+  tooltip.style.padding = '2px 6px';
+  tooltip.style.fontSize = '12px';
+  tooltip.style.borderRadius = '4px';
+  tooltip.style.pointerEvents = 'none';
+  tooltip.style.display = 'none';
+  tooltip.style.zIndex = 10;
+  document.body.appendChild(tooltip);
+
+  // Survol pour tooltip
+  progressContainer.addEventListener('mousemove', (e) => {
+    if (!phrases.length) return;
+
+    const rect = progressContainer.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    const index = Math.floor(ratio * phrases.length);
+    tooltip.textContent = phrases[index]?.trim().slice(0, 80) || '';
+    tooltip.style.left = `${e.clientX + 10}px`;
+    tooltip.style.top = `${e.clientY - 30}px`;
+    tooltip.style.display = 'block';
+  });
+
+  progressContainer.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
+
+  // Clic pour naviguer dans les phrases
+  progressContainer.addEventListener('click', function (e) {
+    if (!phrases.length) return;
+
+    const rect = this.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    const newIndex = Math.floor(ratio * phrases.length);
+    currentPhraseIndex = newIndex;
+    isPaused = false;
+    isStopped = false;
+    synth.cancel();
+    updateUIStart();
+    lirePhrase(currentPhraseIndex);
+  });
 });

@@ -4,6 +4,7 @@ let phrases = [];
 let currentPhraseIndex = 0;
 let isPaused = false;
 let isStopped = false;
+let isTouchEvent = false;
 
 // Fonction pour récupérer le texte principal de la page
 function getTextFromMain() {
@@ -31,7 +32,8 @@ function splitTextToPhrases(text) {
 
 // Fonction pour commencer la lecture
 function lire() {
-  stop();
+  if (isPaused || isStopped || synth.speaking) return; // Empêche de relancer si déjà en lecture
+  stop(); // Assurez-vous de stopper toute lecture précédente
   phrases = splitTextToPhrases(getTextFromMain());
   currentPhraseIndex = 0;
   isPaused = false;
@@ -122,6 +124,9 @@ function updateUIStart() {
   btnLire.textContent = 'Lecture...';
   document.getElementById('btnPause').classList.remove('en-pause');
   document.getElementById('btnResume').classList.remove('en-resume');
+  setTimeout(() => {
+    btnLire.disabled = false; // Temps d'attente pour éviter les clics multiples
+  }, 500);
 }
 
 function updateUIPause() {
@@ -147,11 +152,35 @@ function updateUIStop() {
 // === DOM Ready ===
 window.addEventListener('DOMContentLoaded', () => {
   // Boutons
-  document.getElementById('btnLire').addEventListener('click', lire);
+  document.getElementById('btnLire').addEventListener('click', (e) => {
+    if (!isTouchEvent) lire(e);
+    isTouchEvent = false; // Réinitialiser après l'exécution du clic
+  });
   document.getElementById('btnPause').addEventListener('click', pause);
   document.getElementById('btnResume').addEventListener('click', resume);
   document.getElementById('btnStop').addEventListener('click', stop);
   document.getElementById('vitesse').addEventListener('input', updateVitesse);
+
+  // Ajouter un gestionnaire d'événement pour les événements tactiles (mobile)
+  document.getElementById('btnLire').addEventListener('touchstart', (e) => {
+    isTouchEvent = true;
+    lire(e);
+  });
+
+  document.getElementById('btnPause').addEventListener('touchstart', (e) => {
+    isTouchEvent = true;
+    pause(e);
+  });
+
+  document.getElementById('btnResume').addEventListener('touchstart', (e) => {
+    isTouchEvent = true;
+    resume(e);
+  });
+
+  document.getElementById('btnStop').addEventListener('touchstart', (e) => {
+    isTouchEvent = true;
+    stop(e);
+  });
 
   // Voix
   populateVoix();
@@ -160,50 +189,43 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   if (!voixDisponibles.length) populateVoix();
 
-  // Navigation dans la barre de progression
+  // Progression + tooltip
   const progressContainer = document.getElementById('progressContainer');
   const tooltip = document.createElement('div');
   tooltip.id = 'progressTooltip';
-  tooltip.style.position = 'absolute';
-  tooltip.style.background = '#333';
-  tooltip.style.color = '#fff';
-  tooltip.style.padding = '2px 6px';
-  tooltip.style.fontSize = '12px';
-  tooltip.style.borderRadius = '4px';
-  tooltip.style.pointerEvents = 'none';
-  tooltip.style.display = 'none';
-  tooltip.style.zIndex = 10;
   document.body.appendChild(tooltip);
 
-  // Survol pour tooltip
   progressContainer.addEventListener('mousemove', (e) => {
     if (!phrases.length) return;
 
     const rect = progressContainer.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
     const index = Math.floor(ratio * phrases.length);
+
     tooltip.textContent = phrases[index]?.trim().slice(0, 80) || '';
     tooltip.style.left = `${e.clientX + 10}px`;
-    tooltip.style.top = `${e.clientY - 30}px`;
-    tooltip.style.display = 'block';
+    tooltip.style.top = `${e.clientY - 40}px`;
+    tooltip.classList.add('visible');
   });
 
   progressContainer.addEventListener('mouseleave', () => {
-    tooltip.style.display = 'none';
+    tooltip.classList.remove('visible');
   });
 
-  // Clic pour naviguer dans les phrases
+  // Navigation dans les phrases
   progressContainer.addEventListener('click', function (e) {
     if (!phrases.length) return;
 
     const rect = this.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
     const newIndex = Math.floor(ratio * phrases.length);
-    currentPhraseIndex = newIndex;
-    isPaused = false;
-    isStopped = false;
-    synth.cancel();
-    updateUIStart();
-    lirePhrase(currentPhraseIndex);
+
+    // Ne pas lancer la lecture si on est déjà en pause ou stop
+    if (!isPaused && !isStopped) {
+      currentPhraseIndex = newIndex;
+      synth.cancel();
+      updateUIStart();
+      lirePhrase(currentPhraseIndex);
+    }
   });
 });

@@ -939,82 +939,123 @@ footer .footer-column p {
   border-radius: 5px;
 }
 
-/* config boutons lecture */
-
-
+//* Configuration des boutons de lecture */
 label {
   margin-right: 3px;
 }
 
 #controls {
-    margin-bottom: 1em;
-  }
+  margin-bottom: 1em;
+}
 
-  select, input[type="range"], button {
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
-  }
+/* Espacement des éléments d'input, range, et boutons */
+select, input[type="range"], button {
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+}
 
-  button {
-    padding: 0.4em 0.4em;
-    border: 2px solid #fff;
-    background-color: #f7ab00;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+/* Style des boutons généraux */
+button {
+  padding: 0.4em 0.8em;
+  border: 2px solid #fff;
+  background-color: #f7ab00;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease; /* transition fluide pour le fond et l'agrandissement */
+}
 
-  button:hover {
-    background-color: #2563eb;
-  }
+/* Effet au survol des boutons */
+button:hover {
+  background-color: #2563eb;
+  transform: scale(1.05); /* léger effet d'agrandissement */
+}
 
-  #btnLire.en-lecture {
-    background-color: #facc15;
-    color: #000;
-    animation: pulse 1.5s infinite;
-  }
-  
-  #btnPause.en-pause {
+/* Bouton "Lire" lorsqu'en lecture */
+#btnLire.en-lecture {
+  background-color: #facc15;
+  color: #000;
+  animation: pulse 1.5s infinite;
+}
+
+/* Bouton "Pause" en pause */
+#btnPause.en-pause {
   background-color: #f87171; /* rouge clair */
   animation: pulse 1.5s infinite;
+}
+
+/* Bouton "Resume" en reprise */
+#btnResume.en-resume {
+  background-color: #4ade80; /* vert clair */
+  animation: pulse 1.5s infinite;
+}
+
+/* Animation de pulsation pour les boutons en lecture/pause/reprise */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.6);
   }
-
- #btnResume.en-resume {
- background-color: #4ade80; /* vert clair */
- animation: pulse 1.5s infinite;
- }
-
-
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.6);
-    }
-    70% {
-      box-shadow: 0 0 0 10px rgba(250, 204, 21, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(250, 204, 21, 0);
-    }
+  70% {
+    box-shadow: 0 0 0 10px rgba(250, 204, 21, 0);
   }
-  
-  #progressContainer {
-  width: 100%;
+  100% {
+    box-shadow: 0 0 0 0 rgba(250, 204, 21, 0);
+  }
+}
+
+/* Style du container de la barre de progression */
+#progressContainer {
+  position: relative;
   height: 10px;
-  background-color: #ddd;
+  background: #ddd;
   border-radius: 5px;
+  overflow: hidden;
   cursor: pointer;
-  margin-top: 1rem;
-  }
-  
-  #progressBar {
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+/* Effet de survol pour la barre de progression */
+#progressContainer:hover {
+  background: #ccc;
+}
+
+/* Style de la barre de progression elle-même */
+#progressBar {
   height: 100%;
   width: 0%;
-  background-color: #4caf50;
-  border-radius: 5px;
-  transition: width 0.2s ease;
-  }
+  background: linear-gradient(to right, #4285f4, #7baaf7);
+  border-radius: 5px 0 0 5px;
+  transition: width 0.3s ease;
+}
 
+/* Style du tooltip qui apparaît sur la barre de progression */
+#progressTooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+/* Effet d'apparition du tooltip */
+#progressTooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Focus visuel sur les éléments interactifs pour l'accessibilité */
+button:focus, select:focus, input[type="range"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.6);
+}
 
 /* Média queries Footer pour les petits écrans */
 @media (max-width: 768px) {

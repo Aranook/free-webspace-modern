@@ -75,7 +75,7 @@ function lirePhrase(index) {
 function pause() {
   if (!isPaused && synth.speaking) {
     isPaused = true;
-    synth.cancel(); // Stoppe la phrase en cours
+    synth.pause(); // Utilisation de pause pour ne pas annuler la lecture
     updateUIPause(); // Mise à jour de l'UI pour la pause
   }
 }
@@ -85,7 +85,7 @@ function resume() {
   if (isPaused) {
     isPaused = false;
     updateUIResume(); // Mise à jour de l'UI pour la reprise
-    lirePhrase(currentPhraseIndex); // Reprend à la phrase actuelle
+    synth.resume(); // Reprendre la lecture là où elle a été arrêtée
   }
 }
 
@@ -168,6 +168,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Sécuriser si aucune voix n'est disponible
   if (!voixDisponibles.length) populateVoix(); // Garantir que les voix sont toujours disponibles
-  // Ajouter une vérification pour éviter les double-lectures rapides
-  if (synth.speaking) return; // Empêcher de lancer une nouvelle lecture si une lecture est déjà en cours
 });

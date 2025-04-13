@@ -1,3 +1,4 @@
+// Initialisation
 let synth = window.speechSynthesis;
 let voixDisponibles = [];
 let phrases = [];
@@ -6,13 +7,13 @@ let isPaused = false;
 let isStopped = false;
 let isTouchEvent = false;
 
-// Fonction pour récupérer le texte principal de la page
+// Récupère le texte contenu dans la balise <main>
 function getTextFromMain() {
   const main = document.querySelector('main');
   return main ? main.textContent : '';
 }
 
-// Fonction pour charger les voix disponibles pour la synthèse vocale
+// Charge les voix disponibles en français dans le <select>
 function populateVoix() {
   voixDisponibles = synth.getVoices().filter(v => v.lang.startsWith('fr'));
   const select = document.getElementById('voix');
@@ -25,15 +26,21 @@ function populateVoix() {
   });
 }
 
-// Fonction pour découper le texte en phrases
+// Coupe le texte en phrases basées sur la ponctuation
 function splitTextToPhrases(text) {
   return text.match(/[^.!?\n]+[.!?\n]*/g) || [];
 }
 
-// Fonction pour commencer la lecture
+// Lance la lecture depuis le début ou reprend si en pause
 function lire() {
-  if (isPaused || isStopped || synth.speaking) return; // Empêche de relancer si déjà en lecture
-  stop(); // Assurez-vous de stopper toute lecture précédente
+  if (synth.speaking && !isPaused) return; // Déjà en train de lire
+
+  if (isPaused) {
+    resume(); // Si on est en pause → on reprend
+    return;
+  }
+
+  stop(); // Arrête tout avant de relancer
   phrases = splitTextToPhrases(getTextFromMain());
   currentPhraseIndex = 0;
   isPaused = false;
@@ -42,7 +49,7 @@ function lire() {
   lirePhrase(currentPhraseIndex);
 }
 
-// Fonction pour lire une phrase spécifique
+// Lit une phrase à un index donné
 function lirePhrase(index) {
   if (index >= phrases.length || isStopped) {
     finLecture();
@@ -51,8 +58,7 @@ function lirePhrase(index) {
 
   const phrase = phrases[index];
   const utterance = new SpeechSynthesisUtterance(phrase);
-  const rate = parseFloat(document.getElementById('vitesse').value) || 1;
-  utterance.rate = rate;
+  utterance.rate = parseFloat(document.getElementById('vitesse').value) || 1;
   utterance.lang = 'fr-FR';
 
   const voixIndex = document.getElementById('voix').value;
@@ -60,6 +66,7 @@ function lirePhrase(index) {
     utterance.voice = voixDisponibles[voixIndex];
   }
 
+  // Quand la phrase est finie → lire la suivante si pas en pause/stop
   utterance.onend = () => {
     if (!isPaused && !isStopped) {
       currentPhraseIndex++;
@@ -71,7 +78,7 @@ function lirePhrase(index) {
   synth.speak(utterance);
 }
 
-// Pause
+// Met en pause la lecture
 function pause() {
   if (!isPaused && synth.speaking) {
     isPaused = true;
@@ -80,7 +87,7 @@ function pause() {
   }
 }
 
-// Reprise
+// Reprend la lecture si en pause
 function resume() {
   if (isPaused) {
     isPaused = false;
@@ -89,7 +96,7 @@ function resume() {
   }
 }
 
-// Stop
+// Stoppe totalement la lecture et réinitialise
 function stop() {
   isStopped = true;
   isPaused = false;
@@ -98,25 +105,26 @@ function stop() {
   updateUIStop();
 }
 
-// Fin de lecture
+// Fin de lecture (après dernière phrase)
 function finLecture() {
   updateProgressBar(1);
   updateUIStop();
 }
 
-// Mise à jour de la barre de progression
+// Met à jour la barre de progression en %
 function updateProgressBar(ratio) {
   document.getElementById('progressBar').style.width = `${Math.min(ratio * 100, 100)}%`;
 }
 
-// Mise à jour vitesse
+// Affiche la vitesse choisie
 function updateVitesse() {
   const val = document.getElementById('vitesse').value;
   document.getElementById('valeurVitesse').textContent = val;
 }
 
-// === UI state changes ===
+// === Fonctions de mise à jour de l'interface ===
 
+// UI quand la lecture démarre
 function updateUIStart() {
   const btnLire = document.getElementById('btnLire');
   btnLire.disabled = true;
@@ -124,21 +132,26 @@ function updateUIStart() {
   btnLire.textContent = 'Lecture...';
   document.getElementById('btnPause').classList.remove('en-pause');
   document.getElementById('btnResume').classList.remove('en-resume');
+
+  // Anti double-clic
   setTimeout(() => {
-    btnLire.disabled = false; // Temps d'attente pour éviter les clics multiples
+    btnLire.disabled = false;
   }, 500);
 }
 
+// UI quand on met en pause
 function updateUIPause() {
   document.getElementById('btnPause').classList.add('en-pause');
   document.getElementById('btnResume').classList.remove('en-resume');
 }
 
+// UI quand on reprend
 function updateUIResume() {
   document.getElementById('btnResume').classList.add('en-resume');
   document.getElementById('btnPause').classList.remove('en-pause');
 }
 
+// UI quand on stoppe
 function updateUIStop() {
   const btnLire = document.getElementById('btnLire');
   btnLire.disabled = false;
@@ -149,19 +162,20 @@ function updateUIStop() {
   updateProgressBar(0);
 }
 
-// === DOM Ready ===
+// === Événements DOM ===
 window.addEventListener('DOMContentLoaded', () => {
-  // Boutons
+  // Boutons (clic)
   document.getElementById('btnLire').addEventListener('click', (e) => {
     if (!isTouchEvent) lire(e);
-    isTouchEvent = false; // Réinitialiser après l'exécution du clic
+    isTouchEvent = false;
   });
+
   document.getElementById('btnPause').addEventListener('click', pause);
   document.getElementById('btnResume').addEventListener('click', resume);
   document.getElementById('btnStop').addEventListener('click', stop);
   document.getElementById('vitesse').addEventListener('input', updateVitesse);
 
-  // Ajouter un gestionnaire d'événement pour les événements tactiles (mobile)
+  // Boutons (mobile - tactile)
   document.getElementById('btnLire').addEventListener('touchstart', (e) => {
     isTouchEvent = true;
     lire(e);
@@ -182,14 +196,13 @@ window.addEventListener('DOMContentLoaded', () => {
     stop(e);
   });
 
-  // Voix
+  // Chargement des voix
   populateVoix();
   if (speechSynthesis.onvoiceschanged !== undefined) {
     speechSynthesis.onvoiceschanged = populateVoix;
   }
-  if (!voixDisponibles.length) populateVoix();
 
-  // Progression + tooltip
+  // Tooltip dynamique au survol de la barre de progression
   const progressContainer = document.getElementById('progressContainer');
   const tooltip = document.createElement('div');
   tooltip.id = 'progressTooltip';
@@ -202,9 +215,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const ratio = (e.clientX - rect.left) / rect.width;
     const index = Math.floor(ratio * phrases.length);
 
+    // Utilise pageX/pageY pour tenir compte du scroll vertical
     tooltip.textContent = phrases[index]?.trim().slice(0, 80) || '';
-    tooltip.style.left = `${e.clientX + 10}px`;
-    tooltip.style.top = `${e.clientY - 40}px`;
+    tooltip.style.left = `${e.pageX + 10}px`;
+    tooltip.style.top = `${e.pageY - 40}px`;
     tooltip.classList.add('visible');
   });
 
@@ -212,7 +226,7 @@ window.addEventListener('DOMContentLoaded', () => {
     tooltip.classList.remove('visible');
   });
 
-  // Navigation dans les phrases
+  // Clique sur la barre pour naviguer dans les phrases
   progressContainer.addEventListener('click', function (e) {
     if (!phrases.length) return;
 
@@ -220,12 +234,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const ratio = (e.clientX - rect.left) / rect.width;
     const newIndex = Math.floor(ratio * phrases.length);
 
-    // Ne pas lancer la lecture si on est déjà en pause ou stop
-    if (!isPaused && !isStopped) {
-      currentPhraseIndex = newIndex;
-      synth.cancel();
-      updateUIStart();
-      lirePhrase(currentPhraseIndex);
-    }
+    currentPhraseIndex = newIndex;
+    isPaused = false;
+    isStopped = false;
+    synth.cancel();
+    updateUIStart();
+    lirePhrase(currentPhraseIndex);
   });
 });

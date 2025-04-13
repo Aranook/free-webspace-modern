@@ -1126,44 +1126,44 @@ button:focus, select:focus, input[type="range"]:focus {
 
 @media (max-width: 480px) {
 	
-	@property --padding {
-    syntax: '<length>';
-    inherits: false;
-    initial-value: 5px;
-	}
-	
-	/* Basic Reset */
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-	
-	/* Affichage nav reduit */
-	nav a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 5px;
-    display: inline-block;
-    transition: background-color 0.3s, color 0.3s;
-	font-size: 0.9em
-	}
-	
-	/* Affichage en colonne sur petit écran */
-    .photo-grid {
-        flex-direction: column;
-        align-items: center;
-    }
+@property --padding {
+syntax: '<length>';
+inherits: false;
+initial-value: 5px;
+}
 
-    .photo-grid img {
-        width: 100%;
-    }
-	
-    footer {
-        padding: 15px; /* Réduit le padding pour les très petits écrans */
-    }
+/* Basic Reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
-    footer .footer-column {
-        padding: 10px; /* Réduit le padding des colonnes */
-    }
+/* Affichage nav reduit */
+nav a {
+color: white;
+text-decoration: none;
+padding: 10px 5px;
+display: inline-block;
+transition: background-color 0.3s, color 0.3s;
+font-size: 0.9em
+}
+
+/* Affichage en colonne sur petit écran */
+.photo-grid {
+    flex-direction: column;
+    align-items: center;
+}
+
+.photo-grid img {
+    width: 100%;
+}
+
+footer {
+    padding: 15px; /* Réduit le padding pour les très petits écrans */
+}
+
+footer .footer-column {
+    padding: 10px; /* Réduit le padding des colonnes */
+}
 }

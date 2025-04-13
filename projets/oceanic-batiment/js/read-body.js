@@ -1,23 +1,15 @@
-// outil de lecture du texte contenu dans body
-let utterance;
 let synth = window.speechSynthesis;
 let voixDisponibles = [];
-
-//function getTextFromPage() {
-// return document.body.textContent;
-//}
+let phrases = [];
+let currentPhraseIndex = 0;
+let isPaused = false;
+let isStopped = false;
 
 function getTextFromMain() {
   const main = document.querySelector('main');
   return main ? main.textContent : '';
 }
 
-// Vérifie que la synthèse vocale est supportée
-if (!('speechSynthesis' in window)) {
-  alert('La synthèse vocale n’est pas supportée par ce navigateur.');
-}
-
-// Remplit le menu déroulant avec les voix disponibles en français
 function populateVoix() {
   voixDisponibles = synth.getVoices().filter(v => v.lang.startsWith('fr'));
   const select = document.getElementById('voix');
@@ -31,47 +23,93 @@ function populateVoix() {
   });
 }
 
+function splitTextToPhrases(text) {
+  return text.match(/[^.!?\n]+[.!?\n]*/g) || [];
+}
+
 function lire() {
-  if (synth.speaking) synth.cancel();
+  stop(); // reset state
+  phrases = splitTextToPhrases(getTextFromMain());
+  currentPhraseIndex = 0;
+  isPaused = false;
+  isStopped = false;
 
-  //utterance = new SpeechSynthesisUtterance(getTextFromPage());
-  utterance = new SpeechSynthesisUtterance(getTextFromMain());
-  const vitesseInput = document.getElementById('vitesse');
-  const rate = vitesseInput ? parseFloat(vitesseInput.value) || 1 : 1;
+  document.getElementById('btnLire').disabled = true;
+  document.getElementById('btnLire').classList.add('en-lecture');
+  document.getElementById('btnPause').classList.remove('en-pause');
+  document.getElementById('btnResume').classList.remove('en-resume');
+  document.getElementById('btnLire').textContent = 'Lecture en cours...';
 
-  utterance.lang = 'fr-FR';
+  lirePhrase(currentPhraseIndex);
+}
+
+function lirePhrase(index) {
+  if (index >= phrases.length || isStopped) {
+    finLecture();
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(phrases[index]);
+  const rate = parseFloat(document.getElementById('vitesse').value) || 1;
   utterance.rate = rate;
-  
+  utterance.lang = 'fr-FR';
+
   const voixIndex = document.getElementById('voix').value;
   if (voixDisponibles[voixIndex]) {
     utterance.voice = voixDisponibles[voixIndex];
   }
-  
-  // BONUS UX
-  utterance.onstart = () => {
-    document.getElementById('btnLire').disabled = true;
-  };
 
   utterance.onend = () => {
-    document.getElementById('btnLire').disabled = false;
+    if (!isPaused && !isStopped) {
+      currentPhraseIndex++;
+      updateProgressBar(currentPhraseIndex / phrases.length);
+      lirePhrase(currentPhraseIndex);
+    }
   };
-  
+
   synth.speak(utterance);
 }
 
 function pause() {
-  if (synth.speaking && !synth.paused) synth.pause();
+  if (synth.speaking && !synth.paused) {
+    synth.pause();
+    isPaused = true;
+    document.getElementById('btnPause').classList.add('en-pause');
+    document.getElementById('btnResume').classList.remove('en-resume');
+  }
 }
 
 function resume() {
-  if (synth.paused) synth.resume();
+  if (synth.paused) {
+    synth.resume();
+    isPaused = false;
+    document.getElementById('btnResume').classList.add('en-resume');
+    document.getElementById('btnPause').classList.remove('en-pause');
+  }
 }
 
 function stop() {
-  if (synth.speaking) {
-    synth.cancel();
-    document.getElementById('btnLire').disabled = false;
-  }
+  isStopped = true;
+  isPaused = false;
+  synth.cancel();
+
+  document.getElementById('btnLire').disabled = false;
+  document.getElementById('btnLire').classList.remove('en-lecture');
+  document.getElementById('btnLire').textContent = 'Lire';
+  document.getElementById('btnPause').classList.remove('en-pause');
+  document.getElementById('btnResume').classList.remove('en-resume');
+  updateProgressBar(0);
+}
+
+function finLecture() {
+  document.getElementById('btnLire').disabled = false;
+  document.getElementById('btnLire').classList.remove('en-lecture');
+  document.getElementById('btnLire').textContent = 'Lire';
+  updateProgressBar(1);
+}
+
+function updateProgressBar(ratio) {
+  document.getElementById('progressBar').style.width = `${ratio * 100}%`;
 }
 
 function updateVitesse() {
@@ -79,7 +117,6 @@ function updateVitesse() {
   document.getElementById('valeurVitesse').textContent = val;
 }
 
-// Connexion des boutons aux fonctions après le chargement de la page
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnLire').addEventListener('click', lire);
   document.getElementById('btnPause').addEventListener('click', pause);
@@ -87,8 +124,6 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnStop').addEventListener('click', stop);
   document.getElementById('vitesse').addEventListener('input', updateVitesse);
 
-
- // Charge la liste des voix une première fois
   populateVoix();
   if (speechSynthesis.onvoiceschanged !== undefined) {
     speechSynthesis.onvoiceschanged = populateVoix;

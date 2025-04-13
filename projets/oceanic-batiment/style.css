@@ -940,16 +940,79 @@ footer .footer-column p {
 }
 
 /* config boutons lecture */
-button {
-  margin: 2px;
-  padding: 2px 2px;
-  border: 2px solid #333;
-  border-radius: 5px;
-}
+
 
 label {
   margin-right: 3px;
 }
+
+#controls {
+    margin-bottom: 1em;
+  }
+
+  select, input[type="range"], button {
+    margin-right: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  button {
+    padding: 0.5em 1em;
+    border: 2px solid #fff;
+    background-color: #f7ab00;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #2563eb;
+  }
+
+  #btnLire.en-lecture {
+    background-color: #facc15;
+    color: #000;
+    animation: pulse 1.5s infinite;
+  }
+  
+  #btnPause.en-pause {
+  background-color: #f87171; /* rouge clair */
+  animation: pulse 1.5s infinite;
+  }
+
+ #btnResume.en-resume {
+ background-color: #4ade80; /* vert clair */
+ animation: pulse 1.5s infinite;
+ }
+
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.6);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(250, 204, 21, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(250, 204, 21, 0);
+    }
+  }
+
+  #progressContainer {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  #progressBar {
+    height: 100%;
+    width: 0%;
+    background-color: #3b82f6;
+    transition: width 0.1s linear;
+  }
 
 /* Média queries Footer pour les petits écrans */
 @media (max-width: 768px) {

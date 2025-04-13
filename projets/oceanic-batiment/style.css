@@ -951,7 +951,7 @@ label {
   }
 
   select, input[type="range"], button {
-    margin-right: 1em;
+    margin-right: 0.5em;
     margin-bottom: 0.5em;
   }
 

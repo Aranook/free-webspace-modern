@@ -38,7 +38,7 @@ function lire() {
   document.getElementById('btnLire').classList.add('en-lecture');
   document.getElementById('btnPause').classList.remove('en-pause');
   document.getElementById('btnResume').classList.remove('en-resume');
-  document.getElementById('btnLire').textContent = 'Lecture en cours...';
+  document.getElementById('btnLire').textContent = 'Lecture...';
 
   lirePhrase(currentPhraseIndex);
 }
